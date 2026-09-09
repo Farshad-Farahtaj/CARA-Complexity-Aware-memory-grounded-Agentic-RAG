@@ -1,0 +1,403 @@
+{
+  "model_key": "gptoss",
+  "model_name": "GPT-OSS-120B",
+  "sample_size": 100,
+  "completed": 49,
+  "correct": 45,
+  "accuracy": 91.83673469387756,
+  "avg_seconds": 14.131587310713165,
+  "per_question": [
+    {
+      "question_idx": 1,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 10.1
+    },
+    {
+      "question_idx": 2,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 3.3
+    },
+    {
+      "question_idx": 3,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 1.4
+    },
+    {
+      "question_idx": 4,
+      "predicted": "D",
+      "actual": "D",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 1.1
+    },
+    {
+      "question_idx": 5,
+      "predicted": "B",
+      "actual": "B",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 10.3
+    },
+    {
+      "question_idx": 6,
+      "predicted": "D",
+      "actual": "C",
+      "status": "wrong",
+      "attempts": 1,
+      "seconds": 15.3
+    },
+    {
+      "question_idx": 7,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 14.2
+    },
+    {
+      "question_idx": 8,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 15.8
+    },
+    {
+      "question_idx": 9,
+      "predicted": "D",
+      "actual": "D",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 14.1
+    },
+    {
+      "question_idx": 10,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 17.2
+    },
+    {
+      "question_idx": 11,
+      "predicted": "D",
+      "actual": "D",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 19.5
+    },
+    {
+      "question_idx": 12,
+      "predicted": "B",
+      "actual": "B",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 15.0
+    },
+    {
+      "question_idx": 13,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 14.2
+    },
+    {
+      "question_idx": 14,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 11.2
+    },
+    {
+      "question_idx": 15,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 17.0
+    },
+    {
+      "question_idx": 16,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 13.2
+    },
+    {
+      "question_idx": 17,
+      "predicted": "B",
+      "actual": "B",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 12.1
+    },
+    {
+      "question_idx": 18,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 21.1
+    },
+    {
+      "question_idx": 19,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 12.3
+    },
+    {
+      "question_idx": 20,
+      "predicted": "B",
+      "actual": "B",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 12.6
+    },
+    {
+      "question_idx": 21,
+      "predicted": "B",
+      "actual": "B",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 13.5
+    },
+    {
+      "question_idx": 22,
+      "predicted": "D",
+      "actual": "D",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 13.5
+    },
+    {
+      "question_idx": 23,
+      "predicted": "D",
+      "actual": "D",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 16.3
+    },
+    {
+      "question_idx": 24,
+      "predicted": "B",
+      "actual": "B",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 12.2
+    },
+    {
+      "question_idx": 25,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 15.3
+    },
+    {
+      "question_idx": 26,
+      "predicted": "C",
+      "actual": "B",
+      "status": "wrong",
+      "attempts": 1,
+      "seconds": 14.4
+    },
+    {
+      "question_idx": 27,
+      "predicted": "D",
+      "actual": "D",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 15.1
+    },
+    {
+      "question_idx": 28,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 16.8
+    },
+    {
+      "question_idx": 29,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 17.4
+    },
+    {
+      "question_idx": 30,
+      "predicted": "D",
+      "actual": "D",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 14.1
+    },
+    {
+      "question_idx": 31,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 11.8
+    },
+    {
+      "question_idx": 32,
+      "predicted": "D",
+      "actual": "D",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 15.8
+    },
+    {
+      "question_idx": 33,
+      "predicted": "B",
+      "actual": "C",
+      "status": "wrong",
+      "attempts": 1,
+      "seconds": 16.0
+    },
+    {
+      "question_idx": 34,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 16.6
+    },
+    {
+      "question_idx": 35,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 18.8
+    },
+    {
+      "question_idx": 36,
+      "predicted": "C",
+      "actual": "D",
+      "status": "wrong",
+      "attempts": 1,
+      "seconds": 18.6
+    },
+    {
+      "question_idx": 37,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 21.4
+    },
+    {
+      "question_idx": 38,
+      "predicted": "D",
+      "actual": "D",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 15.0
+    },
+    {
+      "question_idx": 39,
+      "predicted": "B",
+      "actual": "B",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 23.9
+    },
+    {
+      "question_idx": 40,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 10.1
+    },
+    {
+      "question_idx": 41,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 12.1
+    },
+    {
+      "question_idx": 42,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 18.4
+    },
+    {
+      "question_idx": 43,
+      "predicted": "D",
+      "actual": "D",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 11.8
+    },
+    {
+      "question_idx": 44,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 14.0
+    },
+    {
+      "question_idx": 45,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 14.9
+    },
+    {
+      "question_idx": 46,
+      "predicted": "B",
+      "actual": "B",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 15.4
+    },
+    {
+      "question_idx": 47,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 14.1
+    },
+    {
+      "question_idx": 48,
+      "predicted": "D",
+      "actual": "D",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 18.2
+    },
+    {
+      "question_idx": 49,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 5.9
+    }
+  ]
+}
