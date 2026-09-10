@@ -2,10 +2,10 @@
   "model_key": "gemma4",
   "model_name": "Gemma 4 31B",
   "sample_size": 100,
-  "completed": 71,
-  "correct": 47,
-  "accuracy": 66.19718309859155,
-  "avg_seconds": 106.41180291981765,
+  "completed": 100,
+  "correct": 72,
+  "accuracy": 72.0,
+  "avg_seconds": 100.77295220613479,
   "per_question": [
     {
       "question_idx": 1,
@@ -574,6 +574,238 @@
       "status": "ERROR after 3 attempts: ClientError",
       "attempts": 3,
       "seconds": 30.3
+    },
+    {
+      "question_idx": 72,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 40.2
+    },
+    {
+      "question_idx": 73,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 50.0
+    },
+    {
+      "question_idx": 74,
+      "predicted": "B",
+      "actual": "B",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 126.4
+    },
+    {
+      "question_idx": 75,
+      "predicted": "B",
+      "actual": "B",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 67.3
+    },
+    {
+      "question_idx": 76,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 63.4
+    },
+    {
+      "question_idx": 77,
+      "predicted": "B",
+      "actual": "C",
+      "status": "wrong",
+      "attempts": 1,
+      "seconds": 353.8
+    },
+    {
+      "question_idx": 78,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 60.8
+    },
+    {
+      "question_idx": 79,
+      "predicted": "C",
+      "actual": "B",
+      "status": "wrong",
+      "attempts": 1,
+      "seconds": 151.1
+    },
+    {
+      "question_idx": 80,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 76.2
+    },
+    {
+      "question_idx": 81,
+      "predicted": "D",
+      "actual": "D",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 41.2
+    },
+    {
+      "question_idx": 82,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 41.4
+    },
+    {
+      "question_idx": 83,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 74.9
+    },
+    {
+      "question_idx": 84,
+      "predicted": "B",
+      "actual": "B",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 99.9
+    },
+    {
+      "question_idx": 85,
+      "predicted": "B",
+      "actual": "B",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 38.4
+    },
+    {
+      "question_idx": 86,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 87.2
+    },
+    {
+      "question_idx": 87,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 2,
+      "seconds": 138.2
+    },
+    {
+      "question_idx": 88,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 135.2
+    },
+    {
+      "question_idx": 89,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 121.2
+    },
+    {
+      "question_idx": 90,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 74.0
+    },
+    {
+      "question_idx": 91,
+      "predicted": "B",
+      "actual": "B",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 33.7
+    },
+    {
+      "question_idx": 92,
+      "predicted": "B",
+      "actual": "B",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 99.7
+    },
+    {
+      "question_idx": 93,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 62.1
+    },
+    {
+      "question_idx": 94,
+      "predicted": "C",
+      "actual": "A",
+      "status": "wrong",
+      "attempts": 1,
+      "seconds": 90.5
+    },
+    {
+      "question_idx": 95,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 44.7
+    },
+    {
+      "question_idx": 96,
+      "predicted": "B",
+      "actual": "B",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 60.4
+    },
+    {
+      "question_idx": 97,
+      "predicted": "C",
+      "actual": "A",
+      "status": "wrong",
+      "attempts": 1,
+      "seconds": 91.9
+    },
+    {
+      "question_idx": 98,
+      "predicted": "C",
+      "actual": "C",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 48.1
+    },
+    {
+      "question_idx": 99,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 81.2
+    },
+    {
+      "question_idx": 100,
+      "predicted": "A",
+      "actual": "A",
+      "status": "correct",
+      "attempts": 1,
+      "seconds": 68.9
     }
   ]
 }
