@@ -48,6 +48,8 @@ flowchart TB
     class M answer;
 ```
 
+The pipeline runs in two independent phases: indexing happens **once offline**, so the 18-textbook corpus only needs to be embedded a single time and reused across every query. At query time, the same embedding model retrieves the top 3 most relevant chunks from ChromaDB, which are passed as grounding context to whichever LLM is selected — this is what lets `evaluate.py` swap in a different model per run without ever touching the retrieval step.
+
 ---
 
 ## 🤖 Models Evaluated
