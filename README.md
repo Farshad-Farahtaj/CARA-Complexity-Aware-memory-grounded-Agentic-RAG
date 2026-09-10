@@ -17,34 +17,35 @@ A Retrieval-Augmented Generation (RAG) chatbot that answers medical questions gr
 
 ## 🧠 How It Works
 
-### Offline — Indexing (run once)
+```mermaid
+flowchart TB
+    subgraph Offline["📚 Offline — Indexing (run once)"]
+        direction TB
+        A["docs/<br/>18 medical textbooks"] --> B["ingest.py<br/>512-token chunks"]
+        B --> C["nomic-embed-text<br/>(via Ollama)"]
+        C --> D[("ChromaDB<br/>vector store")]
+    end
 
-```
-docs/ (medical textbooks, .txt)
-       │
-       ▼
-[ingest.py]
-  → split into 512-token chunks
-  → embed locally with nomic-embed-text (via Ollama)
-  → store vectors in ./chroma_db
-```
+    subgraph Online["💬 Online — Query (every request)"]
+        direction TB
+        E["User question"] --> F["Embed question<br/>nomic-embed-text"]
+        F --> G["ChromaDB<br/>top-3 similarity search"]
+        G --> H{"Selected LLM"}
+        H --> I["Gemma 4 31B"]
+        H --> J["MedGemma 4B"]
+        H --> K["GPT-OSS-120B"]
+        H --> L["Qwen3.8 27B"]
+        I & J & K & L --> M["🤖 Grounded Answer"]
+    end
 
-### Online — Query (every request)
+    D -.retrieval.-> G
 
-```
-User question
-      │
-      ▼
-[Embed question] → vector (nomic-embed-text)
-      │
-      ▼
-[ChromaDB] → top 3 semantically similar chunks
-      │
-      ▼
-[LLM] ← chunks + question as context
-      │
-      ▼
-  🤖 Grounded answer
+    classDef store fill:#4C72B0,color:#fff,stroke:#333;
+    classDef llm fill:#55A868,color:#fff,stroke:#333;
+    classDef answer fill:#C44E52,color:#fff,stroke:#333;
+    class D store;
+    class I,J,K,L llm;
+    class M answer;
 ```
 
 ---
