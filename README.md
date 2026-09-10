@@ -1,4 +1,4 @@
-# 🏥 RAG Clinic Assistant
+# 🏥 CARA — Complexity-Aware, memory-grounded Agentic RAG
 
 A Retrieval-Augmented Generation (RAG) chatbot that answers medical questions grounded in a corpus of medical textbooks, with a built-in evaluation pipeline comparing multiple LLMs on the MedQA benchmark.
 
@@ -65,7 +65,7 @@ Results from `backend/evaluate.py` are saved per-model in `eval_results/`.
 ## 📁 Project Structure
 
 ```
-RAG-ChatBot/
+CARA/
 ├── docs/                              # Medical textbook corpus (git-ignored, from MedQA)
 ├── MedQA/                             # Raw downloaded MedQA dataset (git-ignored)
 ├── frontend/
@@ -77,7 +77,9 @@ RAG-ChatBot/
 │   ├── ingest.py                      # Step 1: Chunk, embed, and index documents
 │   ├── query.py                       # Step 2: Terminal Q&A interface
 │   ├── api.py                         # Step 3: FastAPI backend
-│   └── evaluate.py                    # Benchmarks each model on a fixed MedQA sample
+│   ├── evaluate.py                    # Benchmarks each model on a fixed MedQA sample
+│   └── analyze_results.py             # Builds comparison chart + markdown table from eval_results/
+├── LICENSE
 ├── .env                                # API keys (git-ignored)
 ├── .gitignore
 └── README.md
@@ -90,8 +92,8 @@ RAG-ChatBot/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/Farshad-Farahtaj/RAG-ChatBot.git
-cd RAG-ChatBot
+git clone https://github.com/Farshad-Farahtaj/CARA.git
+cd CARA
 ```
 
 ### 2. Install Dependencies
@@ -191,6 +193,14 @@ The `.env` file is listed in `.gitignore` and will never be committed to version
 ## 🤝 Contributing
 
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+---
+
+## 👤 Author
+
+**Farshad Farahtaj**
+📧 farahtaj.farshad@gmail.com
+🔗 [github.com/Farshad-Farahtaj](https://github.com/Farshad-Farahtaj)
 
 ---
 
