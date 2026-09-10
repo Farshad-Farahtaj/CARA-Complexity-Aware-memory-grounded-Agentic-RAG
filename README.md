@@ -62,6 +62,23 @@ Results from `backend/evaluate.py` are saved per-model in `eval_results/`.
 
 ---
 
+## 📊 Results
+
+Each model was evaluated on the same fixed, seeded sample of 100 MedQA test questions, using the RAG pipeline (retrieval + generation) end to end.
+
+| Rank | Model | Accuracy | Avg Time/Question | Completed |
+|:---:|---|:---:|:---:|:---:|
+| 🥇 | GPT-OSS-120B | **87.0%** | **14.4s** | 100/100 |
+| 🥈 | Qwen3.8 27B | 82.0% | 15.0s | 100/100 |
+| 🥉 | Gemma 4 31B | 72.0% | 100.8s | 100/100 |
+| 4️⃣ | MedGemma 4B | 62.0% | 168.0s | 100/100 |
+
+![Model comparison chart](eval_results/comparison_chart.png)
+
+> Re-run `python backend/analyze_results.py` any time to regenerate this chart and table from the latest results in `eval_results/`.
+
+---
+
 ## 📁 Project Structure
 
 ```
