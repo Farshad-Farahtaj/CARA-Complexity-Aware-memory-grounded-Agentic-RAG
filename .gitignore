@@ -31,3 +31,6 @@ MedQA/
 
 # Standalone test scripts
 test_*.py
+
+cara.db
+Patient Dataset/

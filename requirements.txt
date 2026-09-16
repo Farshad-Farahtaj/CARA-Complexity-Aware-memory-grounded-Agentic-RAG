@@ -28,3 +28,13 @@ python-dotenv
 
 # ── Analysis / reporting ──────────────────────────────────────
 matplotlib
+
+# ── CARA platform (Streamlit app) ─────────────────────────────
+streamlit
+groq
+bcrypt
+markdown
+streamlit-cookies-controller
+pypdf
+google-genai
+requests

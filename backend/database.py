@@ -1,0 +1,306 @@
+import sqlite3
+import bcrypt
+from pathlib import Path
+from contextlib import contextmanager
+
+DB_PATH = Path("cara.db")
+
+
+@contextmanager
+def get_conn():
+    conn = sqlite3.connect(DB_PATH)
+    conn.row_factory = sqlite3.Row
+    try:
+        yield conn
+    finally:
+        conn.close()
+
+
+def init_db():
+    with get_conn() as conn:
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS clinics (
+                clinic_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                clinic_name TEXT NOT NULL,
+                clinic_type TEXT,
+                contact_name TEXT NOT NULL,
+                phone TEXT NOT NULL,
+                address TEXT NOT NULL,
+                email TEXT UNIQUE NOT NULL,
+                password_hash TEXT NOT NULL
+            )
+        """)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS patients (
+                patient_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                clinic_id INTEGER NOT NULL,
+                full_name TEXT NOT NULL,
+                email TEXT UNIQUE NOT NULL,
+                password_hash TEXT NOT NULL,
+                conditions TEXT DEFAULT '',
+                medications TEXT DEFAULT '',
+                allergies TEXT DEFAULT '',
+                FOREIGN KEY (clinic_id) REFERENCES clinics (clinic_id)
+            )
+        """)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS conversations (
+                conversation_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                patient_id INTEGER NOT NULL,
+                title TEXT DEFAULT 'New chat',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (patient_id) REFERENCES patients (patient_id)
+            )
+        """)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS chat_messages (
+                message_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                conversation_id INTEGER NOT NULL,
+                role TEXT NOT NULL,
+                content TEXT NOT NULL,
+                sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (conversation_id) REFERENCES conversations (conversation_id)
+            )
+        """)
+        conn.execute("""
+            CREATE TABLE IF NOT EXISTS escalations (
+                escalation_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                conversation_id INTEGER NOT NULL,
+                patient_id INTEGER NOT NULL,
+                question TEXT NOT NULL,
+                draft_answer TEXT NOT NULL,
+                reason TEXT,
+                status TEXT NOT NULL DEFAULT 'pending',
+                doctor_reply TEXT,
+                telegram_message_id INTEGER,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                resolved_at TIMESTAMP,
+                FOREIGN KEY (conversation_id) REFERENCES conversations (conversation_id),
+                FOREIGN KEY (patient_id) REFERENCES patients (patient_id)
+            )
+        """)
+        conn.commit()
+
+
+def create_escalation(conversation_id, patient_id, question, draft_answer, reason):
+    with get_conn() as conn:
+        cur = conn.execute(
+            "INSERT INTO escalations (conversation_id, patient_id, question, draft_answer, reason) "
+            "VALUES (?, ?, ?, ?, ?)",
+            (conversation_id, patient_id, question, draft_answer, reason),
+        )
+        conn.commit()
+        return cur.lastrowid
+
+
+def set_escalation_telegram_id(escalation_id, telegram_message_id):
+    with get_conn() as conn:
+        conn.execute(
+            "UPDATE escalations SET telegram_message_id = ? WHERE escalation_id = ?",
+            (telegram_message_id, escalation_id),
+        )
+        conn.commit()
+
+
+def get_pending_escalations():
+    with get_conn() as conn:
+        rows = conn.execute(
+            "SELECT * FROM escalations WHERE status = 'pending' AND telegram_message_id IS NULL"
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+
+def resolve_escalation_by_telegram_id(telegram_message_id, doctor_reply):
+    with get_conn() as conn:
+        conn.execute(
+            "UPDATE escalations SET status = 'resolved', doctor_reply = ?, resolved_at = CURRENT_TIMESTAMP "
+            "WHERE telegram_message_id = ?",
+            (doctor_reply, telegram_message_id),
+        )
+        conn.commit()
+
+
+def get_escalation_for_conversation(conversation_id):
+    with get_conn() as conn:
+        row = conn.execute(
+            "SELECT * FROM escalations WHERE conversation_id = ? ORDER BY escalation_id DESC LIMIT 1",
+            (conversation_id,),
+        ).fetchone()
+        return dict(row) if row else None
+
+
+def create_conversation(patient_id, title="New chat"):
+    with get_conn() as conn:
+        cur = conn.execute(
+            "INSERT INTO conversations (patient_id, title) VALUES (?, ?)", (patient_id, title)
+        )
+        conn.commit()
+        return cur.lastrowid
+
+
+def get_patient_conversations(patient_id):
+    with get_conn() as conn:
+        rows = conn.execute(
+            "SELECT * FROM conversations WHERE patient_id = ? ORDER BY conversation_id DESC",
+            (patient_id,),
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+
+def rename_conversation(conversation_id, title):
+    with get_conn() as conn:
+        conn.execute("UPDATE conversations SET title = ? WHERE conversation_id = ?", (title, conversation_id))
+        conn.commit()
+
+
+def delete_patient_account(patient_id):
+    with get_conn() as conn:
+        conv_ids = [r["conversation_id"] for r in conn.execute(
+            "SELECT conversation_id FROM conversations WHERE patient_id = ?", (patient_id,)
+        ).fetchall()]
+        for cid in conv_ids:
+            conn.execute("DELETE FROM chat_messages WHERE conversation_id = ?", (cid,))
+        conn.execute("DELETE FROM conversations WHERE patient_id = ?", (patient_id,))
+        conn.execute("DELETE FROM patients WHERE patient_id = ?", (patient_id,))
+        conn.commit()
+
+
+def hash_password(password):
+    return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
+
+
+def check_password(password, password_hash):
+    return bcrypt.checkpw(password.encode(), password_hash.encode())
+
+
+def register_clinic(clinic_name, clinic_type, contact_name, phone, address, email, password):
+    with get_conn() as conn:
+        try:
+            conn.execute(
+                "INSERT INTO clinics (clinic_name, clinic_type, contact_name, phone, address, email, password_hash) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (clinic_name, clinic_type, contact_name, phone, address,
+                 email.lower().strip(), hash_password(password)),
+            )
+            conn.commit()
+            return True, None
+        except sqlite3.IntegrityError:
+            return False, "An account with this email already exists."
+
+
+def count_clinic_patients(clinic_id):
+    with get_conn() as conn:
+        row = conn.execute("SELECT COUNT(*) AS n FROM patients WHERE clinic_id = ?", (clinic_id,)).fetchone()
+        return row["n"]
+
+
+def login_clinic(email, password):
+    with get_conn() as conn:
+        row = conn.execute("SELECT * FROM clinics WHERE email = ?", (email.lower().strip(),)).fetchone()
+        if row and check_password(password, row["password_hash"]):
+            return dict(row)
+        return None
+
+
+def get_clinic_by_id(clinic_id):
+    with get_conn() as conn:
+        row = conn.execute("SELECT * FROM clinics WHERE clinic_id = ?", (clinic_id,)).fetchone()
+        return dict(row) if row else None
+
+
+def register_patient(clinic_id, full_name, email, password, conditions="", medications="", allergies=""):
+    with get_conn() as conn:
+        clinic = conn.execute("SELECT 1 FROM clinics WHERE clinic_id = ?", (clinic_id,)).fetchone()
+        if not clinic:
+            return False, "No clinic found with that Clinic ID."
+        try:
+            conn.execute(
+                "INSERT INTO patients (clinic_id, full_name, email, password_hash, conditions, medications, allergies) "
+                "VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (clinic_id, full_name, email.lower().strip(), hash_password(password), conditions, medications, allergies),
+            )
+            conn.commit()
+            return True, None
+        except sqlite3.IntegrityError:
+            return False, "An account with this email already exists."
+
+
+def login_patient(email, password):
+    with get_conn() as conn:
+        row = conn.execute("SELECT * FROM patients WHERE email = ?", (email.lower().strip(),)).fetchone()
+        if row and check_password(password, row["password_hash"]):
+            return dict(row)
+        return None
+
+
+def get_patient_by_id(patient_id):
+    with get_conn() as conn:
+        row = conn.execute("SELECT * FROM patients WHERE patient_id = ?", (patient_id,)).fetchone()
+        return dict(row) if row else None
+
+
+def reset_patient_password(email, full_name, new_password):
+    with get_conn() as conn:
+        row = conn.execute(
+            "SELECT patient_id FROM patients WHERE email = ? AND full_name = ?",
+            (email.lower().strip(), full_name.strip()),
+        ).fetchone()
+        if not row:
+            return False
+        conn.execute(
+            "UPDATE patients SET password_hash = ? WHERE patient_id = ?",
+            (hash_password(new_password), row["patient_id"]),
+        )
+        conn.commit()
+        return True
+
+
+def reset_clinic_password(email, contact_name, new_password):
+    with get_conn() as conn:
+        row = conn.execute(
+            "SELECT clinic_id FROM clinics WHERE email = ? AND contact_name = ?",
+            (email.lower().strip(), contact_name.strip()),
+        ).fetchone()
+        if not row:
+            return False
+        conn.execute(
+            "UPDATE clinics SET password_hash = ? WHERE clinic_id = ?",
+            (hash_password(new_password), row["clinic_id"]),
+        )
+        conn.commit()
+        return True
+
+
+def get_clinic_patients(clinic_id):
+    with get_conn() as conn:
+        rows = conn.execute("SELECT * FROM patients WHERE clinic_id = ?", (clinic_id,)).fetchall()
+        return [dict(r) for r in rows]
+
+
+def save_message(conversation_id, role, content):
+    with get_conn() as conn:
+        conn.execute(
+            "INSERT INTO chat_messages (conversation_id, role, content) VALUES (?, ?, ?)",
+            (conversation_id, role, content),
+        )
+        conn.commit()
+
+
+def get_chat_history(conversation_id):
+    with get_conn() as conn:
+        rows = conn.execute(
+            "SELECT role, content, sent_at FROM chat_messages WHERE conversation_id = ? ORDER BY message_id",
+            (conversation_id,),
+        ).fetchall()
+        return [dict(r) for r in rows]
+
+
+def delete_last_assistant_message(conversation_id):
+    with get_conn() as conn:
+        row = conn.execute(
+            "SELECT message_id FROM chat_messages WHERE conversation_id = ? AND role = 'assistant' "
+            "ORDER BY message_id DESC LIMIT 1", (conversation_id,)
+        ).fetchone()
+        if row:
+            conn.execute("DELETE FROM chat_messages WHERE message_id = ?", (row["message_id"],))
+            conn.commit()

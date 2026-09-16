@@ -1,0 +1,567 @@
+import html
+import os
+import streamlit as st
+import markdown as md_lib
+import pypdf
+from groq import Groq as GroqClient
+from google import genai as google_genai
+from google.genai import types as google_types
+from streamlit_cookies_controller import CookieController
+from llama_index.core import VectorStoreIndex, StorageContext, Settings
+from llama_index.vector_stores.chroma import ChromaVectorStore
+from llama_index.llms.groq import Groq
+from llama_index.embeddings.ollama import OllamaEmbedding
+from dotenv import load_dotenv
+import chromadb
+
+from database import (
+    init_db, register_clinic, login_clinic, register_patient, login_patient,
+    get_clinic_patients, count_clinic_patients,
+    create_conversation, get_patient_conversations, rename_conversation,
+    delete_patient_account, save_message, get_chat_history, delete_last_assistant_message,
+    reset_patient_password, reset_clinic_password, get_patient_by_id, get_clinic_by_id,
+    create_escalation, get_escalation_for_conversation,
+)
+
+load_dotenv()
+init_db()
+
+st.set_page_config(page_title="CARA", page_icon="🏥", layout="wide", initial_sidebar_state="expanded")
+cookies = CookieController()
+
+CUSTOM_CSS = """
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+* { font-family: 'Inter', -apple-system, sans-serif; }
+#MainMenu, footer { visibility: hidden; }
+.stApp { background-color: #0b0d12; }
+section[data-testid="stSidebar"],
+section[data-testid="stSidebar"] > div,
+div[data-testid="stSidebarContent"],
+div[data-testid="stSidebarUserContent"] {
+    background-color: #1a1d27 !important;
+}
+section[data-testid="stSidebar"] {
+    border-right: none !important;
+    box-shadow: 6px 0 24px rgba(0,0,0,0.4);
+}
+[data-testid="stSidebarCollapseButton"],
+[data-testid="collapsedControl"],
+[data-testid="stSidebarCollapsedControl"],
+[aria-label*="collapse" i],
+[aria-label*="close sidebar" i] { display: none !important; }
+.cara-brand { display: flex; align-items: center; gap: 10px; padding: 8px 4px 16px 4px; }
+.cara-brand-name { font-size: 19px; font-weight: 700; color: #f0f6fc; }
+.patient-card {
+    background: #1c2128; border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; padding: 14px; margin-bottom: 12px;
+}
+.patient-card-name { font-size: 15px; font-weight: 600; color: #f0f6fc; margin-bottom: 4px; }
+.patient-card-label { font-size: 11px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.05em; }
+.chat-row { display: flex; margin-bottom: 18px; }
+.chat-row.user { justify-content: flex-end; }
+.chat-row.assistant { justify-content: flex-start; }
+.bubble { max-width: 72%; padding: 13px 17px; border-radius: 18px; font-size: 15px; line-height: 1.6; position: relative; }
+.bubble.user { background: linear-gradient(135deg, #6366f1, #8b5cf6); color: white; border-bottom-right-radius: 4px; }
+.bubble.assistant { background: #1c2128; color: #e6edf3; border: 1px solid rgba(255,255,255,0.08); border-bottom-left-radius: 4px; }
+.bubble p { margin: 0 0 8px 0; }
+.bubble p:last-child { margin-bottom: 0; }
+.bubble ul, .bubble ol { margin: 4px 0; padding-left: 20px; }
+.bubble .ts { font-size: 10px; opacity: 0.5; display: block; margin-top: 4px; }
+.empty-state { text-align: center; color: #8b949e; padding: 60px 20px 30px 20px; }
+.empty-state-icon { font-size: 46px; margin-bottom: 14px; }
+.empty-state-title { font-size: 19px; color: #f0f6fc; font-weight: 600; margin-bottom: 6px; }
+.suggestion-chip {
+    display: inline-block; background: #1c2128; border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 20px; padding: 8px 16px; margin: 4px; font-size: 13px; color: #c9d1d9;
+}
+.conv-item { padding: 8px 10px; border-radius: 8px; font-size: 13px; color: #c9d1d9; margin-bottom: 2px; }
+.conv-item.active { background: rgba(99,102,241,0.18); color: #fff; }
+</style>
+"""
+st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
+
+CARA_LOGO_SM = """<svg width="30" height="30" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#8b5cf6"/></linearGradient></defs>
+<rect width="40" height="40" rx="10" fill="url(#g1)"/>
+<path d="M6,20 L13,20 L16,12 L20,28 L24,16 L27,20 L34,20" stroke="white" stroke-width="2.4"
+fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="34" cy="20" r="2.2" fill="white"/></svg>"""
+
+CARA_LOGO_LG = """<svg width="72" height="72" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+<defs><linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+<stop offset="0%" stop-color="#6366f1"/><stop offset="100%" stop-color="#8b5cf6"/></linearGradient></defs>
+<rect width="40" height="40" rx="10" fill="url(#g2)"/>
+<path d="M6,20 L13,20 L16,12 L20,28 L24,16 L27,20 L34,20" stroke="white" stroke-width="2.4"
+fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="34" cy="20" r="2.2" fill="white"/></svg>"""
+
+SUGGESTED_QUESTIONS = [
+    "What are the symptoms of appendicitis?",
+    "Is it safe to take ibuprofen with my medications?",
+    "What does a low-grade fever mean?",
+]
+
+
+def brand_header():
+    st.markdown(f'<div class="cara-brand">{CARA_LOGO_SM}'
+                '<span class="cara-brand-name">CARA</span></div>', unsafe_allow_html=True)
+
+
+def render_bubble(role, content, sent_at=None):
+    body = md_lib.markdown(content) if role == "assistant" else html.escape(content)
+    ts = f'<span class="ts">{sent_at}</span>' if sent_at else ""
+    st.markdown(f'<div class="chat-row {role}"><div class="bubble {role}">{body}{ts}</div></div>',
+                unsafe_allow_html=True)
+    align_cols = [6, 1] if role == "user" else [1, 6]
+    col_a, col_b = st.columns(align_cols)
+    target_col = col_b if role == "user" else col_a
+    with target_col:
+        with st.popover("📋 Copy", use_container_width=True):
+            st.code(content, language=None, wrap_lines=True)
+
+
+def format_patient_history(p):
+    return (
+        f"Patient: {p['full_name']}\n"
+        f"Medical history: {p['conditions'] or 'None recorded'}\n"
+        f"Current medications: {p['medications'] or 'None recorded'}\n"
+        f"Known allergies: {p['allergies'] or 'None recorded'}"
+    )
+
+
+def rephrase_for_patient(technical_answer):
+    prompt = (
+        "You are a warm, caring nurse explaining a medical answer to a patient in simple, "
+        "everyday language. Rewrite the explanation below so a person with no medical background "
+        "can easily understand it. Use short sentences, a friendly and reassuring tone, and keep "
+        "all safety-relevant advice and specific facts — just say them more simply. Do not add a "
+        "greeting or sign-off, just the explanation itself.\n\n"
+        f"Original explanation:\n{technical_answer}\n\n"
+        "Patient-friendly version:"
+    )
+    return str(Settings.llm.complete(prompt))
+
+
+def needs_doctor_review(patient, question, answer):
+    prompt = (
+        f"{format_patient_history(patient)}\n\n"
+        f"Patient's question: {question}\n"
+        f"Proposed answer: {answer}\n\n"
+        "You are a safety reviewer for a medical chatbot. Your job is to judge how risky the "
+        "QUESTION is for THIS patient, not how well-written the proposed answer is. A correct, "
+        "well-worded answer to a dangerous question is still dangerous to send without a doctor's "
+        "confirmation — do not mark something SAFE just because the answer sounds confident and "
+        "medically accurate.\n\n"
+        "Escalate to a doctor whenever ANY of these apply, regardless of how good the answer is:\n"
+        "- The patient is on 2 or more medications AND the question is about taking another drug, "
+        "a new symptom, or a dosage/timing change.\n"
+        "- The question touches a possible drug-drug, drug-condition, or drug-allergy interaction.\n"
+        "- The symptom described could indicate an emergency (chest pain, breathing trouble, "
+        "severe bleeding, stroke signs, etc.).\n"
+        "- The patient has a serious chronic condition (e.g., heart failure, cancer, dementia) "
+        "relevant to the question.\n\n"
+        "Only mark SAFE for genuinely low-stakes, general-education questions unrelated to this "
+        "patient's specific medications or conditions (e.g., 'what is a fever').\n\n"
+        "Respond with exactly one word on the first line: ESCALATE or SAFE. "
+        "On the second line, give a short reason (one sentence)."
+    )
+    response = str(Settings.llm.complete(prompt)).strip()
+    lines = response.split("\n", 1)
+    decision = lines[0].strip().upper()
+    reason = lines[1].strip() if len(lines) > 1 else ""
+    return decision.startswith("ESCALATE"), reason
+
+
+def ask_cara(query_engine, patient, question, pdf_text=None):
+    extra_context = f"\n\nDocument the patient uploaded:\n{pdf_text}\n" if pdf_text else ""
+    prompt = (
+        f"{format_patient_history(patient)}\n{extra_context}\n"
+        f"Patient's question: {question}\n\n"
+        "Answer the question using the medical reference material, taking the "
+        "patient's specific history, medications, and allergies into account."
+    )
+    technical_answer = str(query_engine.query(prompt))
+    return rephrase_for_patient(technical_answer)
+
+
+def extract_pdf_text(uploaded_file, max_chars=6000):
+    reader = pypdf.PdfReader(uploaded_file)
+    text = "\n".join(page.extract_text() or "" for page in reader.pages)
+    if not text.strip():
+        return None
+    return text[:max_chars]
+
+
+@st.cache_resource
+def get_gemini_client():
+    return google_genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+
+
+def ask_cara_with_image(patient, question, image_bytes, mime_type):
+    prompt = (
+        f"{format_patient_history(patient)}\n\n"
+        f"The patient has attached a photo and asks: {question}\n\n"
+        "Look at the image carefully. Describe what you see that is medically relevant, "
+        "and answer the patient's question taking their history into account. "
+        "If this looks like it could be urgent, say so clearly."
+    )
+    response = get_gemini_client().models.generate_content(
+        model="gemini-3.5-flash-lite",
+        contents=[
+            google_types.Part.from_bytes(data=image_bytes, mime_type=mime_type),
+            prompt,
+        ],
+    )
+    return rephrase_for_patient(response.text)
+
+
+@st.cache_resource
+def load_query_engine():
+    Settings.llm = Groq(model="openai/gpt-oss-120b")
+    Settings.embed_model = OllamaEmbedding(model_name="nomic-embed-text")
+    chroma_client = chromadb.PersistentClient(path="./chroma_db")
+    chroma_collection = chroma_client.get_or_create_collection("rag_collection")
+    vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
+    storage_context = StorageContext.from_defaults(vector_store=vector_store)
+    index = VectorStoreIndex.from_vector_store(vector_store, storage_context=storage_context)
+    return index.as_query_engine(similarity_top_k=3)
+
+
+@st.cache_resource
+def get_groq_client():
+    return GroqClient(api_key=os.getenv("GROQ_API_KEY"))
+
+
+def transcribe_audio(audio_file):
+    transcription = get_groq_client().audio.transcriptions.create(
+        file=("recording.wav", audio_file.getvalue()),
+        model="whisper-large-v3",
+    )
+    return transcription.text
+
+
+for key, default in [("user_type", None), ("user", None), ("active_conv", None),
+                     ("view", "chat"), ("last_audio_id", None)]:
+    if key not in st.session_state:
+        st.session_state[key] = default
+
+# Restore session from cookie if this is a fresh page load after a refresh
+if st.session_state.user is None:
+    saved = cookies.get("cara_session")
+    if saved and ":" in saved:
+        saved_type, saved_id = saved.split(":", 1)
+        try:
+            saved_id = int(saved_id)
+        except ValueError:
+            saved_id = None
+        if saved_type == "patient" and saved_id:
+            restored = get_patient_by_id(saved_id)
+        elif saved_type == "clinic" and saved_id:
+            restored = get_clinic_by_id(saved_id)
+        else:
+            restored = None
+        if restored:
+            st.session_state.user_type = saved_type
+            st.session_state.user = restored
+
+
+def do_logout():
+    st.session_state.user = None
+    st.session_state.user_type = None
+    st.session_state.active_conv = None
+    st.session_state.view = "chat"
+    cookies.remove("cara_session")
+
+
+# ── Landing: role selection + login/register ─────────────────────
+if st.session_state.user is None:
+    st.markdown(f'<div style="text-align:center; padding: 12px 0 4px 0;">{CARA_LOGO_LG}</div>'
+                '<div class="cara-brand-name" style="text-align:center; font-size:24px; margin-bottom:4px;">CARA</div>',
+                unsafe_allow_html=True)
+    st.caption("<div style='text-align:center'>Sign in to continue.</div>", unsafe_allow_html=True)
+
+    role = st.radio("I am a:", ["Patient", "Clinic / Hospital"], horizontal=True)
+    tab_login, tab_register = st.tabs(["Log in", "Register"])
+
+    if role == "Patient":
+        with tab_login:
+            with st.form("patient_login"):
+                email = st.text_input("Email")
+                password = st.text_input("Password", type="password")
+                if st.form_submit_button("Log in", use_container_width=True):
+                    user = login_patient(email, password)
+                    if user:
+                        st.session_state.user_type = "patient"
+                        st.session_state.user = user
+                        cookies.set("cara_session", f"patient:{user['patient_id']}")
+                        st.rerun()
+                    else:
+                        st.error("Incorrect email or password.")
+            with st.expander("Forgot password?"):
+                st.caption("For this prototype, confirm your email and full name to set a new password.")
+                with st.form("patient_reset"):
+                    r_email = st.text_input("Email", key="preset_email")
+                    r_name = st.text_input("Full name (as registered)", key="preset_name")
+                    r_new_pw = st.text_input("New password", type="password", key="preset_pw")
+                    if st.form_submit_button("Reset password"):
+                        if reset_patient_password(r_email, r_name, r_new_pw):
+                            st.success("Password updated. Please log in.")
+                        else:
+                            st.error("No matching account found. Check your email and name.")
+        with tab_register:
+            st.info("You'll need the Clinic ID your clinic gave you to register.")
+            with st.form("patient_register"):
+                clinic_id = st.number_input("Clinic ID", min_value=1, step=1)
+                full_name = st.text_input("Full name")
+                email_r = st.text_input("Email", key="preg_email")
+                password_r = st.text_input("Password", type="password", key="preg_pw")
+                if st.form_submit_button("Register", use_container_width=True):
+                    if not full_name or not email_r or not password_r:
+                        st.error("Please fill in all fields.")
+                    else:
+                        ok, err = register_patient(clinic_id, full_name, email_r, password_r)
+                        if ok:
+                            st.success("Account created. Please log in.")
+                        else:
+                            st.error(err)
+    else:
+        with tab_login:
+            with st.form("clinic_login"):
+                email = st.text_input("Email", key="c_email")
+                password = st.text_input("Password", type="password", key="c_pw")
+                if st.form_submit_button("Log in", use_container_width=True):
+                    clinic = login_clinic(email, password)
+                    if clinic:
+                        st.session_state.user_type = "clinic"
+                        st.session_state.user = clinic
+                        cookies.set("cara_session", f"clinic:{clinic['clinic_id']}")
+                        st.rerun()
+                    else:
+                        st.error("Incorrect email or password.")
+            with st.expander("Forgot password?"):
+                st.caption("For this prototype, confirm your email and contact person name to set a new password.")
+                with st.form("clinic_reset"):
+                    r_email = st.text_input("Email", key="creset_email")
+                    r_contact = st.text_input("Contact person's name (as registered)", key="creset_name")
+                    r_new_pw = st.text_input("New password", type="password", key="creset_pw")
+                    if st.form_submit_button("Reset password"):
+                        if reset_clinic_password(r_email, r_contact, r_new_pw):
+                            st.success("Password updated. Please log in.")
+                        else:
+                            st.error("No matching account found. Check your email and contact name.")
+        with tab_register:
+            with st.form("clinic_register"):
+                clinic_name = st.text_input("Clinic / hospital / practice name *")
+                clinic_type = st.selectbox("Type *", ["Hospital", "Clinic", "Dental practice", "Other"])
+                contact_name = st.text_input("Contact person's full name *",
+                                              help="The staff member responsible for managing patient data")
+                phone = st.text_input("Phone number *")
+                address = st.text_area("Address *", height=70)
+                email_r = st.text_input("Email *", key="creg_email")
+                password_r = st.text_input("Password *", type="password", key="creg_pw")
+                if st.form_submit_button("Register", use_container_width=True):
+                    fields = [clinic_name, contact_name, phone, address, email_r, password_r]
+                    if any(not f.strip() for f in fields):
+                        st.error("All fields marked * are required.")
+                    elif len(clinic_name.strip()) < 2:
+                        st.error("Please enter a real organization name.")
+                    else:
+                        ok, err = register_clinic(
+                            clinic_name.strip(), clinic_type, contact_name.strip(),
+                            phone.strip(), address.strip(), email_r, password_r,
+                        )
+                        if ok:
+                            st.success("Account created. Please log in.")
+                        else:
+                            st.error(err)
+    st.stop()
+
+
+# ── Clinic dashboard ───────────────────────────────────────────────
+if st.session_state.user_type == "clinic":
+    clinic = st.session_state.user
+
+    with st.sidebar:
+        brand_header()
+        st.markdown(f"""<div class="patient-card">
+            <div class="patient-card-label">Organization</div>
+            <div class="patient-card-name">{clinic['clinic_name']}</div>
+        </div>""", unsafe_allow_html=True)
+        if st.button("Log out", use_container_width=True):
+            do_logout()
+            st.rerun()
+
+    st.title(f"🏥 {clinic['clinic_name']}")
+    st.caption(f"{clinic['clinic_type']} · Managed by {clinic['contact_name']}")
+
+    n_patients = count_clinic_patients(clinic["clinic_id"])
+    stat_a, stat_b, stat_c = st.columns(3)
+    stat_a.metric("Registered patients", n_patients)
+    stat_b.metric("Clinic ID", clinic["clinic_id"])
+    stat_c.metric("Phone", clinic["phone"])
+
+    st.info(f"Share **Clinic ID {clinic['clinic_id']}** with your patients so they can register.")
+
+    st.subheader("Your patients")
+    patients = get_clinic_patients(clinic["clinic_id"])
+    if patients:
+        st.dataframe(
+            [{"Name": p["full_name"], "Email": p["email"], "Conditions": p["conditions"] or "—"} for p in patients],
+            use_container_width=True,
+        )
+    else:
+        st.info("No patients registered yet.")
+
+    st.caption("Bulk CSV import for patient records is coming in the next step.")
+    st.stop()
+
+
+# ── Patient: persistent nav column (conversations + account) ──────
+patient = st.session_state.user
+query_engine = load_query_engine()
+
+with st.sidebar:
+    brand_header()
+
+    if st.button("+ New chat", use_container_width=True):
+        st.session_state.active_conv = create_conversation(patient["patient_id"])
+        st.session_state.view = "chat"
+        st.rerun()
+
+    st.caption("Your conversations")
+    conversations = get_patient_conversations(patient["patient_id"])
+    if not conversations:
+        st.session_state.active_conv = create_conversation(patient["patient_id"])
+        conversations = get_patient_conversations(patient["patient_id"])
+    if st.session_state.active_conv is None:
+        st.session_state.active_conv = conversations[0]["conversation_id"]
+
+    for conv in conversations:
+        is_active = conv["conversation_id"] == st.session_state.active_conv
+        label = ("🟣 " if is_active else "") + conv["title"]
+        if st.button(label, key=f"conv_{conv['conversation_id']}", use_container_width=True):
+            st.session_state.active_conv = conv["conversation_id"]
+            st.session_state.view = "chat"
+            st.rerun()
+
+    st.divider()
+    st.markdown(f"""<div class="patient-card">
+        <div class="patient-card-label">Signed in as</div>
+        <div class="patient-card-name">{patient['full_name']}</div>
+    </div>""", unsafe_allow_html=True)
+
+    if st.button("👤 Profile & account", use_container_width=True):
+        st.session_state.view = "account"
+        st.rerun()
+    if st.button("Log out", use_container_width=True):
+        do_logout()
+        st.rerun()
+
+# ── Profile & account view ─────────────────────────────────────────
+if st.session_state.view == "account":
+    st.title("👤 Profile & account")
+    st.text_input("Full name", patient["full_name"], disabled=True)
+    st.text_input("Email", patient["email"], disabled=True)
+    st.text_area("Medical conditions on file", patient["conditions"] or "None recorded", disabled=True)
+    st.text_area("Medications on file", patient["medications"] or "None recorded", disabled=True)
+    st.text_area("Allergies on file", patient["allergies"] or "None recorded", disabled=True)
+    st.caption("This information is managed by your clinic. Contact them to request a correction.")
+
+    st.divider()
+    st.subheader("Danger zone")
+    with st.expander("Delete my account"):
+        st.warning("This permanently deletes your account and all conversation history. This cannot be undone.")
+        confirm = st.text_input("Type DELETE to confirm")
+        if st.button("Permanently delete my account", type="primary", disabled=(confirm != "DELETE")):
+            delete_patient_account(patient["patient_id"])
+            do_logout()
+            st.success("Account deleted.")
+            st.rerun()
+
+# ── Chat view ────────────────────────────────────────────────────
+else:
+    history = get_chat_history(st.session_state.active_conv)
+
+    if not history:
+        st.markdown(f"""<div class="empty-state">
+            <div class="empty-state-icon">🏥</div>
+            <div class="empty-state-title">Hi {patient['full_name'].split()[0]}</div>
+            <div>Ask me anything about your health.</div>
+        </div>""", unsafe_allow_html=True)
+        chip_cols = st.columns(len(SUGGESTED_QUESTIONS))
+        picked_suggestion = None
+        for col, q in zip(chip_cols, SUGGESTED_QUESTIONS):
+            if col.button(q, key=f"sugg_{q}", use_container_width=True):
+                picked_suggestion = q
+    else:
+        picked_suggestion = None
+        for msg in history:
+            render_bubble(msg["role"], msg["content"], msg.get("sent_at"))
+        if history[-1]["role"] == "assistant":
+            if st.button("↻ Regenerate response"):
+                last_question = next(m["content"] for m in reversed(history) if m["role"] == "user")
+                delete_last_assistant_message(st.session_state.active_conv)
+                with st.spinner("CARA is thinking..."):
+                    answer = ask_cara(query_engine, patient, last_question)
+                save_message(st.session_state.active_conv, "assistant", answer)
+                st.rerun()
+
+        pending_escalation = get_escalation_for_conversation(st.session_state.active_conv)
+        if pending_escalation and pending_escalation["status"] == "pending":
+            if st.button("🔄 Check for doctor's reply"):
+                refreshed = get_escalation_for_conversation(st.session_state.active_conv)
+                if refreshed["status"] == "resolved":
+                    clinic = get_clinic_by_id(patient["clinic_id"])
+                    doctor_name = clinic["contact_name"] if clinic else "your doctor"
+                    friendly_reply = rephrase_for_patient(refreshed["doctor_reply"])
+                    final_msg = f"✅ **Reviewed by {doctor_name}:**\n\n{friendly_reply}"
+                    save_message(st.session_state.active_conv, "assistant", final_msg)
+                    st.rerun()
+                else:
+                    st.info("No reply from your doctor yet — please check back later.")
+
+    uploaded_file = st.file_uploader(
+        "📎 Attach a photo or medical document (optional)",
+        type=["png", "jpg", "jpeg", "pdf"],
+    )
+
+    audio_value = st.audio_input("🎤 Or record your question", label_visibility="visible")
+    voice_question = None
+    if audio_value is not None and audio_value.file_id != st.session_state.last_audio_id:
+        st.session_state.last_audio_id = audio_value.file_id
+        with st.spinner("Transcribing your voice message..."):
+            voice_question = transcribe_audio(audio_value)
+
+    question = st.chat_input("Message CARA...") or picked_suggestion or voice_question
+    if question:
+        if not history:
+            rename_conversation(st.session_state.active_conv,
+                                 question[:40] + ("…" if len(question) > 40 else ""))
+        save_message(st.session_state.active_conv, "user", question)
+        render_bubble("user", question)
+
+        with st.spinner("CARA is thinking..."):
+            if uploaded_file is not None and uploaded_file.type in ("image/png", "image/jpeg"):
+                answer = ask_cara_with_image(patient, question, uploaded_file.getvalue(), uploaded_file.type)
+            elif uploaded_file is not None and uploaded_file.type == "application/pdf":
+                pdf_text = extract_pdf_text(uploaded_file)
+                if not pdf_text.strip():
+                    pdf_text = "(The attached PDF appears to contain no readable text.)"
+                answer = ask_cara(query_engine, patient, question, pdf_text=pdf_text)
+            else:
+                answer = ask_cara(query_engine, patient, question)
+            escalate, reason = needs_doctor_review(patient, question, answer)
+
+        if escalate:
+            create_escalation(st.session_state.active_conv, patient["patient_id"], question, answer, reason)
+            pending_msg = (
+                "⏳ This question needs your doctor's review before I can answer it safely. "
+                "I'll let you know here once they respond — you can also come back and check anytime."
+            )
+            save_message(st.session_state.active_conv, "assistant", pending_msg)
+            st.rerun()
+        else:
+            render_bubble("assistant", answer)
+            save_message(st.session_state.active_conv, "assistant", answer)
