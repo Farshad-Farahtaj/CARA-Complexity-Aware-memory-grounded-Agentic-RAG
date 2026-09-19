@@ -1,7 +1,5 @@
 import html
 import os
-from pathlib import Path
-from datetime import datetime, timedelta
 import streamlit as st
 import pandas as pd
 import markdown as md_lib
@@ -22,7 +20,6 @@ from database import (
     get_clinic_patients, count_clinic_patients, add_patient_shell, update_patient,
     set_patient_active, get_patient_by_email,
     create_conversation, get_patient_conversations, rename_conversation,
-    get_empty_conversation, delete_conversation,
     delete_patient_account, save_message, get_chat_history, delete_last_assistant_message,
     reset_patient_password, reset_clinic_password, get_patient_by_id, get_clinic_by_id,
     create_escalation, get_escalation_for_conversation, mark_escalation_shown,
@@ -31,18 +28,6 @@ from database import (
 
 load_dotenv()
 init_db()
-
-# Anchored to the folder this file (app.py) lives in, then one level up to the
-# project root - the SAME fix already applied to database.py's DB_PATH, and for
-# the exact same reason: a bare relative path like "./chroma_db" points to a
-# DIFFERENT real folder depending on which directory you happen to launch
-# Streamlit from (the project root vs. the backend folder). That ambiguity is
-# exactly what silently created two separate, out-of-sync copies of the
-# ChromaDB knowledge base in this project before this fix - anchoring the path
-# here means Streamlit always reads the SAME chroma_db no matter where you run
-# the `streamlit run` command from.
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-CHROMA_DB_PATH = PROJECT_ROOT / "chroma_db"
 
 st.set_page_config(page_title="CARA", page_icon="🏥", layout="wide", initial_sidebar_state="expanded")
 cookies = CookieController()
@@ -63,27 +48,11 @@ section[data-testid="stSidebar"] {
     border-right: none !important;
     box-shadow: 6px 0 24px rgba(0,0,0,0.4);
 }
-/* Sidebar collapse / reopen control: keep it (don't hide it!) but restyle so the
-   icon is actually visible against our dark background in both the open-sidebar
-   state and the collapsed (reopen-arrow) state. */
-[data-testid="stSidebarCollapseButton"] button,
-[data-testid="stSidebarCollapsedControl"] button,
-[data-testid="collapsedControl"] button {
-    background-color: #1c2128 !important;
-    border: 1px solid rgba(255,255,255,0.15) !important;
-    border-radius: 8px !important;
-}
-[data-testid="stSidebarCollapseButton"] svg,
-[data-testid="stSidebarCollapsedControl"] svg,
-[data-testid="collapsedControl"] svg {
-    fill: #e6edf3 !important;
-    color: #e6edf3 !important;
-}
+[data-testid="stSidebarCollapseButton"],
+[data-testid="collapsedControl"],
 [data-testid="stSidebarCollapsedControl"],
-[data-testid="collapsedControl"] {
-    z-index: 999999 !important;
-    top: 12px !important;
-}
+[aria-label*="collapse" i],
+[aria-label*="close sidebar" i] { display: none !important; }
 .cara-brand { display: flex; align-items: center; gap: 10px; padding: 8px 4px 16px 4px; }
 .cara-brand-name { font-size: 19px; font-weight: 700; color: #f0f6fc; }
 .patient-card {
@@ -111,18 +80,6 @@ section[data-testid="stSidebar"] {
 }
 .conv-item { padding: 8px 10px; border-radius: 8px; font-size: 13px; color: #c9d1d9; margin-bottom: 2px; }
 .conv-item.active { background: rgba(99,102,241,0.18); color: #fff; }
-.emergency-banner {
-    background: rgba(248,81,73,0.12);
-    border: 1px solid rgba(248,81,73,0.35);
-    border-radius: 10px;
-    padding: 10px 14px;
-    font-size: 12.5px;
-    line-height: 1.5;
-    color: #ffb4ab;
-    margin: 4px 0 14px 0;
-}
-.emergency-banner strong { color: #ff8a80; }
-.health-snapshot-caption { color: #8b949e; font-size: 12px; margin-top: 6px; }
 </style>
 """
 st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
@@ -148,14 +105,6 @@ SUGGESTED_QUESTIONS = [
     "Is it safe to take ibuprofen with my medications?",
     "What does a low-grade fever mean?",
 ]
-
-EMERGENCY_BANNER = (
-    '<div class="emergency-banner">🚨 <strong>Medical emergency?</strong> '
-    'If you are experiencing a life-threatening emergency (e.g. chest pain, difficulty '
-    'breathing, severe bleeding, stroke symptoms), call your local emergency number or go '
-    'to the nearest emergency room right away. CARA is an informational assistant and is '
-    'not designed to handle emergencies.</div>'
-)
 
 
 def brand_header():
@@ -228,78 +177,6 @@ def needs_doctor_review(patient, question, answer):
     return decision.startswith("ESCALATE"), reason
 
 
-def generate_conversation_title(question):
-    """Asks the LLM for a short, human-readable title for a new conversation, based on
-    the patient's first message - the same idea as ChatGPT's auto-titling. Falls back to
-    a plain truncation of the question if the LLM call fails for any reason, so a chat
-    always ends up with SOME title and this can never crash the app."""
-    prompt = (
-        "Generate a short, descriptive title (3-5 words, no ending punctuation, no quotation "
-        "marks) for a medical chat conversation that starts with this patient question. "
-        "Summarize the medical topic - do not just repeat the question.\n\n"
-        f"Patient's question: {question}\n\n"
-        "Title:"
-    )
-    try:
-        title = str(Settings.llm.complete(prompt)).strip().strip('"').strip("'")
-        title = title.split("\n")[0].strip()
-        if not title:
-            raise ValueError("empty title")
-        return title[:60]
-    except Exception:
-        return question[:40] + ("…" if len(question) > 40 else "")
-
-
-def format_minutes(minutes):
-    """Turns a raw minute count into a short human string, e.g. '42 min', '3.2 h', '1.4 d'.
-    Returns an em dash when there is no data yet (e.g. no resolved escalations)."""
-    if minutes is None:
-        return "—"
-    if minutes < 1:
-        return "just now"
-    if minutes < 60:
-        return f"{int(round(minutes))} min"
-    hours = minutes / 60
-    if hours < 24:
-        return f"{hours:.1f} h"
-    return f"{hours / 24:.1f} d"
-
-
-def get_wait_info(created_at_str):
-    """For a still-pending escalation: how long it's been waiting, plus an urgency
-    tier ('low' / 'medium' / 'high') so the clinic dashboard can visually flag the
-    ones that have been sitting the longest and need attention first."""
-    try:
-        created = datetime.strptime(created_at_str, "%Y-%m-%d %H:%M:%S")
-    except (ValueError, TypeError):
-        return "unknown", "low"
-    minutes = (datetime.utcnow() - created).total_seconds() / 60
-    if minutes < 30:
-        urgency = "low"
-    elif minutes < 120:
-        urgency = "medium"
-    else:
-        urgency = "high"
-    return format_minutes(minutes), urgency
-
-
-def compute_avg_response_minutes(escalations):
-    """Average time-to-resolution (in minutes) across this clinic's resolved
-    escalations. Returns None if none have been resolved yet."""
-    diffs = []
-    for e in escalations:
-        if e["status"] == "resolved" and e.get("resolved_at") and e.get("created_at"):
-            try:
-                created = datetime.strptime(e["created_at"], "%Y-%m-%d %H:%M:%S")
-                resolved = datetime.strptime(e["resolved_at"], "%Y-%m-%d %H:%M:%S")
-                diffs.append((resolved - created).total_seconds() / 60)
-            except (ValueError, TypeError):
-                continue
-    if not diffs:
-        return None
-    return sum(diffs) / len(diffs)
-
-
 def ask_cara(query_engine, patient, question, pdf_text=None):
     extra_context = f"\n\nDocument the patient uploaded:\n{pdf_text}\n" if pdf_text else ""
     prompt = (
@@ -347,7 +224,7 @@ def ask_cara_with_image(patient, question, image_bytes, mime_type):
 def load_query_engine():
     Settings.llm = Groq(model="openai/gpt-oss-120b")
     Settings.embed_model = OllamaEmbedding(model_name="nomic-embed-text")
-    chroma_client = chromadb.PersistentClient(path=str(CHROMA_DB_PATH))
+    chroma_client = chromadb.PersistentClient(path="./chroma_db")
     chroma_collection = chroma_client.get_or_create_collection("rag_collection")
     vector_store = ChromaVectorStore(chroma_collection=chroma_collection)
     storage_context = StorageContext.from_defaults(vector_store=vector_store)
@@ -369,7 +246,7 @@ def transcribe_audio(audio_file):
 
 
 for key, default in [("user_type", None), ("user", None), ("active_conv", None),
-                     ("view", "chat"), ("last_audio_id", None), ("confirm_delete_conv", None)]:
+                     ("view", "chat"), ("last_audio_id", None)]:
     if key not in st.session_state:
         st.session_state[key] = default
 
@@ -407,7 +284,6 @@ if st.session_state.user is None:
                 '<div class="cara-brand-name" style="text-align:center; font-size:24px; margin-bottom:4px;">CARA</div>',
                 unsafe_allow_html=True)
     st.caption("<div style='text-align:center'>Sign in to continue.</div>", unsafe_allow_html=True)
-    st.markdown(EMERGENCY_BANNER, unsafe_allow_html=True)
 
     role = st.radio("I am a:", ["Patient", "Clinic / Hospital"], horizontal=True)
     tab_login, tab_register = st.tabs(["Log in", "Register"])
@@ -527,29 +403,13 @@ if st.session_state.user_type == "clinic":
     all_escalations = get_escalations_for_clinic(clinic["clinic_id"])
     pending_escalations = [e for e in all_escalations if e["status"] == "pending"]
 
-    stat_a, stat_b, stat_c, stat_d, stat_e = st.columns(5)
+    stat_a, stat_b, stat_c, stat_d = st.columns(4)
     stat_a.metric("Active patients", n_patients)
     stat_b.metric("Clinic ID", clinic["clinic_id"])
     stat_c.metric("Phone", clinic["phone"])
     stat_d.metric("Pending questions", len(pending_escalations))
-    stat_e.metric("Avg. response time", format_minutes(compute_avg_response_minutes(all_escalations)))
 
     st.info(f"Share **Clinic ID {clinic['clinic_id']}** with your patients so they can register.")
-
-    if all_escalations:
-        df_esc = pd.DataFrame(all_escalations)
-        df_esc["created_at"] = pd.to_datetime(df_esc["created_at"])
-        cutoff = datetime.utcnow() - timedelta(days=14)
-        recent = df_esc[df_esc["created_at"] >= cutoff]
-        if not recent.empty:
-            st.divider()
-            st.subheader("📈 Escalation activity (last 14 days)")
-            counts = recent.groupby(recent["created_at"].dt.date).size()
-            counts.index.name = "Date"
-            counts = counts.rename("Questions asked")
-            st.bar_chart(counts)
-
-    st.divider()
 
     tab_patients, tab_add, tab_escalations = st.tabs([
         "👥 Patients", "➕ Add patients", f"⏳ Escalations ({len(pending_escalations)})",
@@ -715,15 +575,9 @@ if st.session_state.user_type == "clinic":
         if not all_escalations:
             st.info("No escalations yet.")
         else:
-            urgency_icons = {"low": "🟢", "medium": "🟠", "high": "🔴"}
             for e in all_escalations:
                 status_icon = "⏳" if e["status"] == "pending" else "✅"
-                if e["status"] == "pending":
-                    wait_label, urgency = get_wait_info(e["created_at"])
-                    title = (f"{status_icon} {urgency_icons[urgency]} {e['patient_name']} — "
-                             f"{e['question'][:60]}... (waiting {wait_label})")
-                else:
-                    title = f"{status_icon} {e['patient_name']} — {e['question'][:60]}..."
+                title = f"{status_icon} {e['patient_name']} — {e['question'][:60]}..."
                 with st.expander(title, expanded=(e["status"] == "pending")):
                     st.markdown(f"**Question:** {e['question']}")
                     st.markdown(f"**Flagged because:** {e['reason']}")
@@ -750,11 +604,9 @@ query_engine = load_query_engine()
 
 with st.sidebar:
     brand_header()
-    st.markdown(EMERGENCY_BANNER, unsafe_allow_html=True)
 
     if st.button("+ New chat", use_container_width=True):
-        existing_empty = get_empty_conversation(patient["patient_id"])
-        st.session_state.active_conv = existing_empty or create_conversation(patient["patient_id"])
+        st.session_state.active_conv = create_conversation(patient["patient_id"])
         st.session_state.view = "chat"
         st.rerun()
 
@@ -767,36 +619,12 @@ with st.sidebar:
         st.session_state.active_conv = conversations[0]["conversation_id"]
 
     for conv in conversations:
-        cid = conv["conversation_id"]
-        if st.session_state.confirm_delete_conv == cid:
-            st.caption(f"Delete “{conv['title']}”? This cannot be undone.")
-            c_yes, c_no = st.columns(2)
-            if c_yes.button("✓ Delete", key=f"del_yes_{cid}", use_container_width=True):
-                blocking_escalation = get_escalation_for_conversation(cid)
-                if blocking_escalation and blocking_escalation["status"] == "pending":
-                    st.session_state.confirm_delete_conv = None
-                    st.warning("This chat has a question still waiting for your doctor's "
-                               "review, so it can't be deleted yet.")
-                else:
-                    delete_conversation(cid)
-                    st.session_state.confirm_delete_conv = None
-                    if st.session_state.active_conv == cid:
-                        st.session_state.active_conv = None
-                    st.rerun()
-            if c_no.button("✕ Cancel", key=f"del_no_{cid}", use_container_width=True):
-                st.session_state.confirm_delete_conv = None
-                st.rerun()
-        else:
-            is_active = cid == st.session_state.active_conv
-            label = ("🟣 " if is_active else "") + conv["title"]
-            col_main, col_del = st.columns([5, 1])
-            if col_main.button(label, key=f"conv_{cid}", use_container_width=True):
-                st.session_state.active_conv = cid
-                st.session_state.view = "chat"
-                st.rerun()
-            if col_del.button("🗑", key=f"del_{cid}", use_container_width=True, help="Delete this chat"):
-                st.session_state.confirm_delete_conv = cid
-                st.rerun()
+        is_active = conv["conversation_id"] == st.session_state.active_conv
+        label = ("🟣 " if is_active else "") + conv["title"]
+        if st.button(label, key=f"conv_{conv['conversation_id']}", use_container_width=True):
+            st.session_state.active_conv = conv["conversation_id"]
+            st.session_state.view = "chat"
+            st.rerun()
 
     st.divider()
     st.markdown(f"""<div class="patient-card">
@@ -835,15 +663,6 @@ if st.session_state.view == "account":
 # ── Chat view ────────────────────────────────────────────────────
 else:
     history = get_chat_history(st.session_state.active_conv)
-
-    with st.expander("📋 My health snapshot", expanded=False):
-        st.markdown(f"**Conditions:** {patient['conditions'] or 'None recorded'}")
-        st.markdown(f"**Medications:** {patient['medications'] or 'None recorded'}")
-        st.markdown(f"**Allergies:** {patient['allergies'] or 'None recorded'}")
-        st.markdown(
-            '<div class="health-snapshot-caption">Managed by your clinic — contact them to '
-            'request a correction.</div>', unsafe_allow_html=True,
-        )
 
     if not history:
         st.markdown(f"""<div class="empty-state">
@@ -903,17 +722,18 @@ else:
 
     question = st.chat_input("Message CARA...") or picked_suggestion or voice_question
     if question:
+        if not history:
+            rename_conversation(st.session_state.active_conv,
+                                 question[:40] + ("…" if len(question) > 40 else ""))
         save_message(st.session_state.active_conv, "user", question)
         render_bubble("user", question)
 
         with st.spinner("CARA is thinking..."):
-            if not history:
-                rename_conversation(st.session_state.active_conv, generate_conversation_title(question))
             if uploaded_file is not None and uploaded_file.type in ("image/png", "image/jpeg"):
                 answer = ask_cara_with_image(patient, question, uploaded_file.getvalue(), uploaded_file.type)
             elif uploaded_file is not None and uploaded_file.type == "application/pdf":
                 pdf_text = extract_pdf_text(uploaded_file)
-                if not pdf_text:
+                if not pdf_text.strip():
                     pdf_text = "(The attached PDF appears to contain no readable text.)"
                 answer = ask_cara(query_engine, patient, question, pdf_text=pdf_text)
             else:

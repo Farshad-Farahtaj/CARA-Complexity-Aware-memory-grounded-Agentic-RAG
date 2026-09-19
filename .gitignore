@@ -34,3 +34,5 @@ test_*.py
 
 cara.db
 Patient Dataset/
+
+backend/scripts/check_login.py

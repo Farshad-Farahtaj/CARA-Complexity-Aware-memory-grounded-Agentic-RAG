@@ -1,0 +1,7 @@
+{
+  "n": 50,
+  "rag_consistent": 21,
+  "rag_consistency_rate": 0.42,
+  "no_rag_consistent": 16,
+  "no_rag_consistency_rate": 0.32
+}
