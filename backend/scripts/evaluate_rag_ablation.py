@@ -8,31 +8,26 @@ judge each answer against the REAL source passage it came from.
 This is the evidence RQ2 asks for: does retrieval actually make answers more
 accurate/grounded, or would the same LLM do just as well on its own?
 
-VERSION 2 - what changed and why
---------------------------------
-The first version had a bug in the step that hands the judge's two verdicts
-back to the two conditions. The judge sees the two answers in a random order
-("Answer 1" / "Answer 2"). When the no-RAG answer was shown first, the two
-verdicts were handed back the wrong way round, so for those questions the RAG
-verdict was stored as the no-RAG verdict and vice versa.
+For every question the script saves:
+  - the two answers and the two verdicts of the judge,
+  - which answer the judge saw first (the order is random but reproducible),
+  - the identifiers of the passages that retrieval gave to the model,
+  - whether the source passage of the question was among them, and its
+    position in the ranking of the retriever (looking at the first 10).
 
-This version:
-  1. assigns the verdicts correctly,
-  2. stores, for every question, which answer was shown first
-     ("rag_shown_first"), so the result can always be checked afterwards,
-  3. decides the order from the question's own test_id (not from how many
-     questions were processed before it), so the order is the same no matter
-     how many times the script is stopped and restarted,
-  4. automatically RE-JUDGES the questions that were evaluated by the first
-     version. It reuses the answers that are already saved (it does not
-     generate them again), so this only costs one judge call per question.
+The last two items make it possible to measure how often retrieval finds the
+right passage, separately from how well the model uses it.
+
+All 50 questions are answered with one and the same configuration. A result
+that does not contain the retrieved passages (produced by an earlier version
+of this script) is generated again, so that the whole test set is consistent.
 
 Standalone script (does not import app.py) - same reasoning as
 evaluate_escalation_guard.py: app.py runs Streamlit-only setup code on
 import, which crashes outside `streamlit run`.
 
 Safe to close/interrupt and re-run: saves progress after every question and
-skips ones already done.
+skips the ones already done.
 
 Run from anywhere (same pattern as the other backend/scripts/*.py files):
     python backend\\scripts\\evaluate_rag_ablation.py
@@ -61,7 +56,19 @@ TESTSET_PATH = PROJECT_ROOT / "backend" / "scripts" / "rag_ablation_testset.csv"
 RESULTS_DIR = PROJECT_ROOT / "rag_ablation_results"
 RAW_PATH = RESULTS_DIR / "rag_ablation_raw.json"
 
+K = 2             # passages given to the model in the retrieval condition
+RANK_DEPTH = 10   # how far down the ranking we look for the source passage
 JUDGE_SEED = 23   # together with the test_id, decides which answer the judge sees first
+ANSWER_INSTRUCTION = "(Answer in 2-3 concise sentences.)"
+
+MAX_ATTEMPTS = 3          # attempts for an ordinary error of the provider
+RETRY_PAUSE = 5           # seconds between those attempts
+RATE_LIMIT_WAIT = 65      # seconds to wait when the provider says "too many requests"
+MAX_RATE_LIMIT_WAITS = 4  # after this many waits the run stops (progress is saved)
+
+
+class ProviderLimitReached(Exception):
+    """The provider keeps refusing requests: stop now and continue later."""
 
 
 def setup():
@@ -82,11 +89,61 @@ def setup():
     return index, Settings.llm
 
 
-def answer_with_rag(index, question, k=2):
-    # k=2 and response_mode="simple_summarize" (a single LLM call) - unchanged from version 1.
-    query_engine = index.as_query_engine(similarity_top_k=k, response_mode="simple_summarize")
-    response = query_engine.query(f"{question}\n\n(Answer in 2-3 concise sentences.)")
-    return str(response).strip()
+# ----------------------------------------------------------------------
+# Calls to the provider, with waiting and retrying
+# ----------------------------------------------------------------------
+def is_rate_limit_error(exc):
+    text = f"{type(exc).__name__} {exc}".lower()
+    return any(s in text for s in ("429", "rate limit", "rate_limit", "ratelimit",
+                                   "too many requests", "quota"))
+
+
+def call_with_retries(function, sleep=time.sleep):
+    """Runs function(). Waits and tries again when the provider is rate-limiting,
+    and repeats a few times on any other error."""
+    attempts = 0
+    rate_waits = 0
+    while True:
+        try:
+            return function()
+        except Exception as e:  # noqa: BLE001
+            if is_rate_limit_error(e):
+                rate_waits += 1
+                if rate_waits > MAX_RATE_LIMIT_WAITS:
+                    raise ProviderLimitReached(str(e)) from e
+                print(f"    provider is rate-limiting, waiting {RATE_LIMIT_WAIT}s "
+                      f"({rate_waits}/{MAX_RATE_LIMIT_WAITS}) ...")
+                sleep(RATE_LIMIT_WAIT)
+                continue
+            attempts += 1
+            if attempts >= MAX_ATTEMPTS:
+                raise
+            sleep(RETRY_PAUSE)
+
+
+# ----------------------------------------------------------------------
+# The two conditions
+# ----------------------------------------------------------------------
+def retrieval_query(question):
+    return f"{question}\n\n{ANSWER_INSTRUCTION}"
+
+
+def normalize(text):
+    return " ".join((text or "").split())
+
+
+def is_source(node_with_score, chunk_id, source_chunk):
+    """True if a retrieved passage is the passage the question was written from."""
+    node = node_with_score.node
+    return node.node_id == chunk_id or normalize(node.get_content()) == normalize(source_chunk)
+
+
+def answer_with_rag(index, question):
+    """One generation call on the K retrieved passages.
+    Returns the answer and the passages that were given to the model."""
+    query_engine = index.as_query_engine(similarity_top_k=K, response_mode="simple_summarize")
+    response = query_engine.query(retrieval_query(question))
+    return str(response).strip(), list(response.source_nodes)
 
 
 def answer_without_rag(llm, question):
@@ -98,6 +155,21 @@ def answer_without_rag(llm, question):
     return str(llm.complete(prompt)).strip()
 
 
+def rank_of_source(index, question, chunk_id, source_chunk):
+    """Position of the source passage among the first RANK_DEPTH passages returned
+    by the retriever for this question (1 = first), or None if it is not there.
+    This uses only the embedding model, no call to the language model."""
+    retriever = index.as_retriever(similarity_top_k=RANK_DEPTH)
+    nodes = retriever.retrieve(retrieval_query(question))
+    for rank, node_with_score in enumerate(nodes, start=1):
+        if is_source(node_with_score, chunk_id, source_chunk):
+            return rank
+    return None
+
+
+# ----------------------------------------------------------------------
+# The judge
+# ----------------------------------------------------------------------
 def rag_is_shown_first(test_id):
     """Random but reproducible: depends only on the seed and on the question's id."""
     return random.Random(f"{JUDGE_SEED}-{test_id}").random() < 0.5
@@ -144,6 +216,9 @@ def judge(llm, source_chunk, question, rag_answer, no_rag_answer, rag_first):
     return rag_verdict, no_rag_verdict, response
 
 
+# ----------------------------------------------------------------------
+# Results on disk
+# ----------------------------------------------------------------------
 def load_existing_results():
     if RAW_PATH.exists():
         with open(RAW_PATH, encoding="utf-8") as f:
@@ -159,20 +234,58 @@ def save_results(results):
     tmp.replace(RAW_PATH)   # atomic: a crash can never leave a half-written results file
 
 
-def needs_rejudging(result):
-    return "rag_shown_first" not in result
+def is_complete(result):
+    """A result is complete when it contains the passages that were retrieved."""
+    return "retrieved_chunk_ids" in result
 
 
+def evaluate_question(index, llm, row, sleep):
+    question = row["question"]
+    rag_first = rag_is_shown_first(row["test_id"])
+
+    rag_answer, source_nodes = call_with_retries(lambda: answer_with_rag(index, question), sleep)
+    no_rag_answer = call_with_retries(lambda: answer_without_rag(llm, question), sleep)
+    v_rag, v_no_rag, raw = call_with_retries(
+        lambda: judge(llm, row["source_chunk"], question, rag_answer, no_rag_answer, rag_first), sleep)
+    rank = call_with_retries(
+        lambda: rank_of_source(index, question, row["chunk_id"], row["source_chunk"]), sleep)
+
+    return {
+        "test_id": row["test_id"],
+        "chunk_id": row["chunk_id"],
+        "source_chunk": row["source_chunk"],
+        "question": question,
+        "rag_answer": rag_answer,
+        "no_rag_answer": no_rag_answer,
+        "rag_verdict": v_rag,
+        "no_rag_verdict": v_no_rag,
+        "raw_judge_response": raw,
+        "rag_shown_first": rag_first,
+        "retrieved_chunk_ids": [n.node.node_id for n in source_nodes],
+        "source_retrieved": any(is_source(n, row["chunk_id"], row["source_chunk"]) for n in source_nodes),
+        "source_rank": rank,
+    }
+
+
+# ----------------------------------------------------------------------
+# Summary
+# ----------------------------------------------------------------------
 def write_summary(results):
     n = len(results)
-    rag_correct = sum(1 for r in results if r["rag_verdict"] == "CONSISTENT")
-    no_rag_correct = sum(1 for r in results if r["no_rag_verdict"] == "CONSISTENT")
-    both = sum(1 for r in results if r["rag_verdict"] == "CONSISTENT" and r["no_rag_verdict"] == "CONSISTENT")
+    consistent = lambda r, key: r[key] == "CONSISTENT"  # noqa: E731
+    rag_correct = sum(consistent(r, "rag_verdict") for r in results)
+    no_rag_correct = sum(consistent(r, "no_rag_verdict") for r in results)
+    both = sum(consistent(r, "rag_verdict") and consistent(r, "no_rag_verdict") for r in results)
     rag_only = rag_correct - both
     no_rag_only = no_rag_correct - both
 
+    hits = [r for r in results if r["source_retrieved"]]
+    misses = [r for r in results if not r["source_retrieved"]]
+    ranks = [r["source_rank"] for r in results]
+
     summary = {
         "n": n,
+        "k": K,
         "rag_consistent": rag_correct,
         "rag_consistency_rate": round(rag_correct / n, 4) if n else 0,
         "no_rag_consistent": no_rag_correct,
@@ -182,6 +295,13 @@ def write_summary(results):
         "only_no_rag_consistent": no_rag_only,
         "neither_consistent": n - both - rag_only - no_rag_only,
         "rag_shown_first": sum(1 for r in results if r["rag_shown_first"]),
+        "source_passage_retrieved": len(hits),
+        "rag_consistent_when_retrieved": sum(consistent(r, "rag_verdict") for r in hits),
+        "rag_consistent_when_not_retrieved": sum(consistent(r, "rag_verdict") for r in misses),
+        "no_rag_consistent_when_retrieved": sum(consistent(r, "no_rag_verdict") for r in hits),
+        "no_rag_consistent_when_not_retrieved": sum(consistent(r, "no_rag_verdict") for r in misses),
+        "source_in_top": {str(depth): sum(1 for rank in ranks if rank is not None and rank <= depth)
+                          for depth in (1, 2, 3, 5, 10)},
     }
     with open(RESULTS_DIR / "rag_ablation_summary.json", "w", encoding="utf-8") as f:
         json.dump(summary, f, indent=2)
@@ -194,10 +314,23 @@ def write_summary(results):
         f"{summary['no_rag_consistency_rate']*100:.1f}% |\n"
         f"| Consistent in this condition only | {summary['only_rag_consistent']} | "
         f"{summary['only_no_rag_consistent']} |\n"
+        f"| Consistent when the source passage was retrieved ({len(hits)} questions) | "
+        f"{summary['rag_consistent_when_retrieved']} | {summary['no_rag_consistent_when_retrieved']} |\n"
+        f"| Consistent when it was not retrieved ({len(misses)} questions) | "
+        f"{summary['rag_consistent_when_not_retrieved']} | {summary['no_rag_consistent_when_not_retrieved']} |\n"
     )
     with open(RESULTS_DIR / "rag_ablation_table.md", "w", encoding="utf-8") as f:
         f.write(table)
-    return table
+
+    extra = (
+        f"\nSource passage among the {K} passages given to the model: {len(hits)}/{n}\n"
+        "Source passage within the first 1 / 2 / 3 / 5 / 10 of the ranking: "
+        + " / ".join(str(summary["source_in_top"][d]) for d in ("1", "2", "3", "5", "10")) + "\n"
+        f"Both consistent: {both}   only RAG: {rag_only}   only no-RAG: {no_rag_only}   "
+        f"neither: {summary['neither_consistent']}\n"
+        f"RAG answer shown first to the judge: {summary['rag_shown_first']}/{n}\n"
+    )
+    return table + extra
 
 
 def main(index=None, llm=None, sleep=time.sleep):
@@ -208,72 +341,38 @@ def main(index=None, llm=None, sleep=time.sleep):
     if index is None or llm is None:
         index, llm = setup()
 
-    results = load_existing_results()
-
-    # ---- Step 1: re-judge the questions evaluated by version 1 (answers are reused) ----
-    old = [r for r in results if needs_rejudging(r)]
-    if old:
-        print(f"{len(old)} question(s) were judged by the first version of this script.")
-        print("Re-judging them now, using the answers that are already saved ...")
-    for n_done, r in enumerate(old, start=1):
-        rag_first = rag_is_shown_first(r["test_id"])
-        try:
-            v_rag, v_no_rag, raw = judge(llm, r["source_chunk"], r["question"],
-                                         r["rag_answer"], r["no_rag_answer"], rag_first)
-        except Exception as e:  # noqa: BLE001
-            print(f"[re-judge {n_done}/{len(old)}] ERROR on test_id {r['test_id']}: {e}  (will retry next run)")
-            continue
-        r["rag_verdict_v1"] = r["rag_verdict"]          # kept only as a record of the old, unreliable value
-        r["no_rag_verdict_v1"] = r["no_rag_verdict"]
-        r["rag_verdict"], r["no_rag_verdict"] = v_rag, v_no_rag
-        r["raw_judge_response"] = raw
-        r["rag_shown_first"] = rag_first
-        save_results(results)
-        print(f"[re-judge {n_done}/{len(old)}] test_id {r['test_id']}: RAG={v_rag:12s} No-RAG={v_no_rag:12s}")
-        sleep(0.3)
-
-    # ---- Step 2: evaluate the questions that have no result yet ----
-    done_ids = {r["test_id"] for r in results}
-    todo = [row for row in rows if row["test_id"] not in done_ids]
+    by_id = {r["test_id"]: r for r in load_existing_results()}
+    todo = [row for row in rows if not is_complete(by_id.get(row["test_id"], {}))]
     if todo:
-        print(f"{len(todo)} new question(s) to evaluate.")
+        print(f"{len(todo)} question(s) to evaluate ({len(rows) - len(todo)} already complete).")
+
     for n_done, row in enumerate(todo, start=1):
-        rag_first = rag_is_shown_first(row["test_id"])
         try:
-            rag_answer = answer_with_rag(index, row["question"])
-            no_rag_answer = answer_without_rag(llm, row["question"])
-            v_rag, v_no_rag, raw = judge(llm, row["source_chunk"], row["question"],
-                                         rag_answer, no_rag_answer, rag_first)
+            result = evaluate_question(index, llm, row, sleep)
+        except ProviderLimitReached:
+            print("\n[!] The provider is not accepting more requests right now.\n"
+                  "    Everything done so far is saved. Run the same command again later to continue.")
+            break
         except Exception as e:  # noqa: BLE001
             print(f"[{n_done}/{len(todo)}] ERROR on test_id {row['test_id']}: {e}  (will retry next run)")
             continue
 
-        results.append({
-            **row,
-            "rag_answer": rag_answer,
-            "no_rag_answer": no_rag_answer,
-            "rag_verdict": v_rag,
-            "no_rag_verdict": v_no_rag,
-            "raw_judge_response": raw,
-            "rag_shown_first": rag_first,
-        })
-        save_results(results)
-        print(f"[{n_done}/{len(todo)}] test_id {row['test_id']}: RAG={v_rag:12s} No-RAG={v_no_rag:12s}")
+        by_id[row["test_id"]] = result
+        # Always saved in the order of the test set.
+        save_results([by_id[r["test_id"]] for r in rows if r["test_id"] in by_id])
+        rank = result["source_rank"] if result["source_rank"] is not None else f">{RANK_DEPTH}"
+        print(f"[{n_done}/{len(todo)}] test_id {row['test_id']}: RAG={result['rag_verdict']:12s} "
+              f"No-RAG={result['no_rag_verdict']:12s} source passage rank: {rank}")
         sleep(0.3)
 
-    # ---- Step 3: summary (only when every stored result is a version-2 result) ----
     print("=" * 70)
-    still_old = sum(1 for r in results if needs_rejudging(r))
-    missing = len(rows) - len(results)
-    if still_old:
-        print(f"[!] {still_old} question(s) still have to be re-judged. The summary files were NOT "
-              "updated.\n    Run the same command again to finish.")
+    results = [by_id[r["test_id"]] for r in rows if r["test_id"] in by_id]
+    remaining = sum(1 for row in rows if not is_complete(by_id.get(row["test_id"], {})))
+    if remaining:
+        print(f"[!] {remaining} question(s) are not finished yet. The summary files were NOT updated.\n"
+              "    Run the same command again to finish.")
         return
-    table = write_summary(results)
-    print(table)
-    if missing:
-        print(f"[!] {missing} question(s) of the test set have no result yet (errors above). "
-              "Run the same command again to finish them.")
+    print(write_summary(results))
     print(f"Saved detailed results to: {RESULTS_DIR}")
 
 
