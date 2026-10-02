@@ -6,9 +6,12 @@
     "question": "Which 1994 American Journal of Obstetrics and Gynecology article investigated the microbial etiology of acute salpingitis?",
     "rag_answer": "The 1994 article is\u202fSoper\u202fDE,\u202fBrockwell\u202fNJ,\u202fDalton\u202fHP,\u202fet\u202fal.,\u202f\u201cObservations concerning the microbial etiology of acute salpingitis,\u201d\u202fAmerican Journal of Obstetrics and Gynecology,\u202f1994;\u202fvol\u202f170:\u202f1008\u20111017.",
     "no_rag_answer": "The study you\u2019re thinking of is:\n\n**Haggerty CL, Hillier SL, et\u202fal. \u201cMicrobial etiology of acute salpingitis.\u201d**  \n*American Journal of Obstetrics and Gynecology.* 1994;\u202f170(5):\u202f1245\u20111250.  \n\nThis 1994 AJOG article examined the range of microorganisms isolated from women with acute salpingitis, providing data on the relative frequencies of *Chlamydia trachomatis*, *Neisseria gonorrhoeae*, anaerobic bacteria, and other pathogens in this condition.",
-    "rag_verdict": "INCONSISTENT",
-    "no_rag_verdict": "CONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT"
+    "rag_verdict": "CONSISTENT",
+    "no_rag_verdict": "INCONSISTENT",
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "CONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "2",
@@ -17,9 +20,12 @@
     "question": "Which 2014 article listed in the passage investigated three\u2011dimensional sonography for differentiating interstitial, angular, and intrauterine pregnancies in a septate uterus?",
     "rag_answer": "The 2014 article by Tanaka.",
     "no_rag_answer": "I\u2019m sorry\u2014I don\u2019t have the passage you\u2019re referring to, so I can\u2019t identify which 2014 article it mentions. Could you please provide the list of articles or the relevant excerpt? Once I can see the titles/authors, I\u2019ll be able to tell you which one investigated three\u2011dimensional sonography for differentiating interstitial, angular, and intrauterine pregnancies in a septate uterus.",
-    "rag_verdict": "INCONSISTENT",
-    "no_rag_verdict": "CONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT"
+    "rag_verdict": "CONSISTENT",
+    "no_rag_verdict": "INCONSISTENT",
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "CONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "3",
@@ -30,7 +36,10 @@
     "no_rag_answer": "I\u2019m happy to help, but I\u2019ll need to see the specific passage you\u2019re referring to in order to give you the exact prevalence range it reports for dysthymic (persistent depressive) disorder. If you can paste the relevant excerpt here, I can pull the numbers directly from it. \n\nIn the meantime, for general context, epidemiological studies typically find that dysthymic disorder affects roughly\u202f1\u20132\u202f% of the population over a given year and about\u202f2\u20136\u202f% over a lifetime, though exact figures can vary depending on the sample and diagnostic criteria used.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "4",
@@ -41,7 +50,10 @@
     "no_rag_answer": "**Short answer**  \nIn heart\u2011failure (HF) the body\u2019s ability to clear aldosterone from the circulation is markedly reduced, so the hormone stays in the blood longer. The main reasons are:\n\n1. **Reduced renal blood flow and glomerular filtration** \u2192 the kidneys, which are the principal route for aldosterone elimination, filter less drug\u2011like hormone.  \n2. **Lower hepatic metabolism** (often secondary to congestion of the liver) \u2192 the liver\u2019s enzymes that break down aldosterone work more slowly.  \n3. **Increased plasma\u2011protein binding and a larger apparent volume of distribution** \u2192 because HF patients are often volume\u2011overloaded, aldosterone distributes into a bigger fluid compartment and a larger fraction is bound to albumin/transcortin, both of which slow its removal.  \n\nTogether, these factors lengthen the biologic half\u2011life of aldosterone from the normal \u224820\u202fminutes to **2\u20134\u202fhours** in many patients with advanced HF.\n\n---\n\n### How the physiologic cascade works\n\n| Step | What happens in HF | Effect on aldosterone half\u2011life |\n|------|-------------------|---------------------------------|\n| **1. Decreased forward cardiac output** | Less blood reaches the kidneys \u2192 renal perfusion falls. | \u2193 GFR \u2192 \u2193 filtration of aldosterone \u2192 slower renal excretion. |\n| **2. Activation of the renin\u2011angiotensin\u2011aldosterone system (RAAS)** | Low renal perfusion \u2192 \u2191 renin \u2192 \u2191 angiotensin\u202fII \u2192 \u2191 aldosterone synthesis. | Higher production adds to the \u201capparent\u201d half\u2011life because plasma levels stay elevated longer. |\n| **3. Sympathetic nervous system (SNS) activation** | \u2191 norepinephrine \u2192 stimulates juxtaglomerular cells \u2192 more renin. | Same as above \u2013 more hormone being made while clearance is impaired. |\n| **4. Congestive hepatopathy** (blood backs up into the liver) | Hepatic blood flow falls; liver enzymes that metabolize steroids work less efficiently. | \u2193 metabolic clearance of aldosterone. |\n| **5. Fluid overload & expanded extracellular space** | Total body water is up; aldosterone partitions into this larger compartment. | The hormone\u2019s apparent distribution volume rises, which mathematically lengthens its elimination half\u2011life. |\n| **6. Altered plasma\u2011protein binding** | HF often causes hypo\u2011albuminemia or changes in transcortin levels; a higher proportion of aldosterone becomes protein\u2011bound. | Protein\u2011bound hormone is cleared more slowly than free hormone. |\n\n---\n\n### Clinical relevance\n\n* **Why it matters:** Prolonged aldosterone exposure promotes sodium and water retention, potassium loss, myocardial fibrosis, and vascular remodeling\u2014all of which worsen HF symptoms and prognosis.  \n* **Therapeutic implication:** This is why **mineral\u2011corticoid\u2011receptor antagonists (MRAs)** such as spironolactone or eplerenone are cornerstone therapies in HFrEF (heart\u2011failure with reduced ejection fraction). By blocking the receptor, they blunt the harmful downstream effects of the \u201cextra\u2011long\u2011acting\u201d aldosterone.  \n* **Monitoring:** Because aldosterone stays longer in the circulation, the effects of MRAs (e.g., hyper\u2011kalaemia) may also be more pronounced and require careful lab monitoring, especially in patients with severe renal dysfunction.\n\n---\n\n### Quick take\u2011home points\n\n| Point | Explanation |\n|-------|-------------|\n| **Renal clearance \u2193** | Low GFR \u2192 aldosterone is filtered less \u2192 elimination slows. |\n| **Hepatic metabolism \u2193** | Congestive hepatopathy \u2192 steroid\u2011metabolizing enzymes work less efficiently. |\n| **Volume of distribution \u2191** | Fluid overload spreads aldosterone into a larger extracellular pool. |\n| **Protein binding \u2191** | More aldosterone is bound to albumin/transcortin, which is cleared more slowly. |\n| **Result** | Biological half\u2011life stretches from ~20\u202fmin (healthy) to 2\u20134\u202fh (moderate\u2011to\u2011severe HF). |\n\n---\n\n### References (for further reading)\n\n1. **Pitt B, et al.** *The RALES Study: Spironolactone in Severe Heart Failure.* N Engl J Med. 1999;341:709\u2011717.  \n2. **Mann DL.** *Neurohumoral activation in heart failure.* J Am Coll Cardiol. 2002;40: 1\u20119.  \n3. **Zannad F, et al.** *Eplerenone in patients with systolic heart failure and mild symptoms.* N Engl J Med. 2011;364:11\u201121.  \n4. **Miller WL, et al.** *Renal handling of aldosterone in chronic heart failure.* Kidney Int. 1995;48: 1245\u20111252.  \n5. **Klein J, et al.** *Altered steroid metabolism in congestive hepatopathy.* Hepatology. 2000;31: 115\u2011122.\n\n---\n\n**Bottom line:** In heart failure the kidneys and liver\u2014our main \u201cclean\u2011up\u201d organs for aldosterone\u2014are under\u2011perfused, and the body\u2019s fluid compartments are expanded. Both factors act together to keep aldosterone in the bloodstream far longer than normal, which is why blocking its receptor is such an important therapeutic strategy.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "5",
@@ -52,7 +64,10 @@
     "no_rag_answer": "**Short answer:**  \nMost expert societies recommend that patients who have undergone an endoscopic resection (EMR, ESD, or similar) be examined **at least three times during the first year** \u2013 typically at **3\u202fmonths, 6\u202fmonths, and 12\u202fmonths** after the procedure.  \n\nThe exact timing can be adjusted based on the organ involved, the pathology of the resected lesion, and whether the resection margins were clear.\n\n---\n\n## Why a \u201c3\u2011month \u2192 6\u2011month \u2192 12\u2011month\u201d schedule?\n\n| Time point | Goal of the endoscopic (or imaging) check |\n|------------|--------------------------------------------|\n| **~3\u202fmonths** | \u2022 Confirm that the resection site has healed.<br>\u2022 Detect any **residual or early recurrent tissue** that might have been missed on the index procedure.<br>\u2022 Obtain biopsies if the scar looks suspicious. |\n| **~6\u202fmonths** | \u2022 Re\u2011assess the scar after the early healing phase.<br>\u2022 Identify **early recurrence** that can still be managed endoscopically.<br>\u2022 Provide a safety net for lesions that were high\u2011risk (e.g., submucosal invasion, positive/uncertain margins). |\n| **12\u202fmonths** | \u2022 Establish the **baseline for long\u2011term surveillance**.<br>\u2022 Ensure that no delayed recurrence has occurred.<br>\u2022 Decide on the interval for subsequent (year\u20112 onward) follow\u2011up. |\n\n---\n\n## How the schedule varies by organ and pathology\n\n| Organ / Lesion type | Typical first\u2011year surveillance schedule* |\n|---------------------|--------------------------------------------|\n| **Esophagus (Barrett\u2019s neoplasia, early SCC/adenocarcinoma)** | Endoscopy at 3\u202fmo, then at 6\u202fmo, then at 12\u202fmo. If margins are R0 and no dysplasia, some centers may skip the 6\u2011mo exam and go straight to 12\u202fmo, but most keep the 3\u2011 and 6\u2011mo checks. |\n| **Stomach (early gastric cancer, adenoma)** | ESD/EMR \u2192 endoscopy at 3\u202fmo, then at 6\u201312\u202fmo (often 6\u202fmo). After a clear 12\u2011mo exam, most guidelines shift to **annual** surveillance for at least 3\u202fyears. |\n| **Colon / Rectum (large sessile polyps, early colorectal cancer)** | Colonoscopy at 3\u20136\u202fmo (most often 3\u202fmo) to assess the resection site and obtain biopsies. A second colonoscopy at 12\u202fmo is recommended, especially if the original lesion had high\u2011grade dysplasia or invasive cancer. |\n| **Duodenum / Small bowel (ampullary adenoma, early duodenal cancer)** | Endoscopy at 3\u202fmo, then at 12\u202fmo; some experts add a 6\u2011mo check if the resection was piecemeal or margins were uncertain. |\n| **Bronchial or other non\u2011GI endoscopic resections** | Similar principle \u2013 a 3\u2011mo bronchoscopy, then 6\u2011mo, then 12\u2011mo, adjusted for pathology. |\n\n\\*These are the most common patterns in the literature and in major society guidelines (e.g., ESGE, ASGE, JGES, NCCN). Individual centers may have slightly different protocols.\n\n---\n\n## Factors that may **shorten** or **extend** the interval\n\n| Situation | Typical adjustment |\n|-----------|--------------------|\n| **Positive or indeterminate resection margins** | Earlier repeat (often at 1\u20132\u202fmonths) and then the standard 3\u2011/6\u2011/12\u2011mo schedule. |\n| **Piecemeal resection** (multiple fragments) | More frequent checks \u2013 usually 3\u202fmo and 6\u202fmo, sometimes a 9\u2011mo exam before the 12\u2011mo one. |\n| **High\u2011grade dysplasia or submucosal invasion** | Consider a 3\u2011mo exam plus a **second** exam at 9\u202fmo (instead of 6\u202fmo) to ensure no early recurrence. |\n| **Poor healing (e.g., ulceration, fibrosis, comorbidities)** | May repeat at 2\u202fmo and then follow the usual schedule. |\n| **Complete (R0) resection of a low\u2011risk lesion (e.g., tubular adenoma <10\u202fmm, no dysplasia)** | Some guidelines allow the first surveillance to be at 6\u202fmo, with the 12\u2011mo exam still recommended. |\n| **Patient preference / logistical issues** | If a patient cannot attend a 3\u2011mo visit, a 6\u2011mo visit is acceptable, but the 12\u2011mo exam remains essential. |\n\n---\n\n## What the surveillance visit typically includes\n\n1. **High\u2011definition endoscopy** (often with narrow\u2011band imaging or chromoendoscopy) to visualize the scar.\n2. **Targeted biopsies** of any suspicious area (even a subtle scar change can harbor residual disease).\n3. **Photodocumentation** for comparison with prior exams.\n4. **Assessment of symptoms** (e.g., dysphagia, abdominal pain, bleeding) that might prompt earlier imaging.\n5. **Adjunct imaging** (CT, MRI, EUS) only if there is suspicion of deeper invasion or extra\u2011luminal disease.\n\n---\n\n## Practical take\u2011away for patients\n\n- **Mark your calendar** for endoscopic appointments at roughly **3\u202fmonths, 6\u202fmonths, and 12\u202fmonths** after the resection.\n- **Keep a symptom diary** (pain, bleeding, change in bowel habits, reflux) and report any new issues immediately\u2014these may trigger an unscheduled exam.\n- **Ask your physician** whether your pathology report suggests any special considerations (e.g., positive margins) that could change the timing.\n- **Follow the post\u2011procedure instructions** (diet, acid suppression, smoking cessation) to promote optimal healing and reduce recurrence risk.\n\n---\n\n### Key references (latest editions, 2023\u20112024)\n\n1. **European Society of Gastrointestinal Endoscopy (ESGE) Guideline on Endoscopic Resection** \u2013 recommends 3\u2011, 6\u2011, and 12\u2011month endoscopic surveillance for gastric and colorectal EMR/ESD.\n2. **American Society for Gastrointestinal Endoscopy (ASGE) Clinical Practice Update, 2023** \u2013 similar schedule, with emphasis on margin status.\n3. **Japanese Gastroenterological Endoscopy Society (JGES) Guidelines for ESD** \u2013 3\u2011month endoscopy for early gastric cancer, then 6\u201112\u202fmonths.\n4. **NCCN Guidelines for Colon Cancer, Version 2.2024** \u2013 surveillance colonoscopy at 3\u20136\u202fmonths after endoscopic removal of high\u2011risk lesions.\n5. **British Society of Gastroenterology (BSG) Post\u2011ESD Surveillance Recommendations, 2024** \u2013 3\u2011, 6\u2011, 12\u2011month endoscopy for Barrett\u2019s neoplasia.\n\n---\n\n**Bottom line:**  \nFor most patients who have had an endoscopic resection, the standard practice is to perform **three surveillance endoscopies in the first year\u2014at about 3\u202fmonths, 6\u202fmonths, and 12\u202fmonths**\u2014with the exact timing tailored to the lesion\u2019s risk features and the completeness of the initial resection.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "6",
@@ -63,7 +78,10 @@
     "no_rag_answer": "**Early\u2011mortality rate reported**\n\nIn the pooled series of **1\u202f436 patients** who underwent repair of an acute proximal aortic dissection with hypothermic circulatory arrest, the reported **early (in\u2011hospital/30\u2011day) mortality ranged from roughly\u202f5\u202f% to\u202f10\u202f%** across the participating centres.\n\n**Subgroup with the lowest early\u2011death rate**\n\nWhen the cohort was divided according to the cerebral\u2011protective strategy used during circulatory arrest:\n\n| Cerebral\u2011protective strategy | Early\u2011mortality (approx.) |\n|------------------------------|---------------------------|\n| **Unilateral ante\u2011grade cerebral perfusion (ACP)** | **\u2248\u202f5\u202f%** |\n| Bilateral ACP | \u2248\u202f7\u202f% |\n\nThus, the **unilateral\u2011ACP subgroup experienced the lowest early\u2011death rate**.",
     "rag_verdict": "CONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "7",
@@ -73,8 +91,11 @@
     "rag_answer": "Lesions of the posterior frontal lobe produce a spastic paralysis affecting the opposite side of the body, involving the face, arm and leg.",
     "no_rag_answer": "**Short answer**  \nA lesion of the posterior frontal lobe (the region that contains the primary motor cortex\u202f\u2013\u202fpre\u2011central gyrus\u202f\u2013\u202fand the adjacent premotor/supplementary\u2011motor areas) produces a classic **upper\u2011motor\u2011neuron (UMN) syndrome** on the side of the body opposite the lesion.  In addition to pure weakness, patients often have loss of fine\u2011motor control and difficulty planning or sequencing movements (apraxia).\n\n---\n\n### Typical motor findings\n\n| Domain | What you see clinically | Why it happens |\n|--------|------------------------|----------------|\n| **Strength** | **Contralateral hemiparesis** \u2013 most obvious in the lower face, hand and fingers; the leg may be less affected because its representation lies more medially. | Damage to the corticospinal (pyramidal) fibers that originate in the primary motor cortex. |\n| **Tone & Reflexes** | **Spasticity** (velocity\u2011dependent increase in tone) and **hyper\u2011reflexia** (exaggerated deep tendon reflexes). | Loss of descending inhibitory control from the motor cortex on spinal reflex arcs. |\n| **Pathological reflexes** | **Babinski sign** (upgoing great toe) and other \u201cUMN signs\u201d (clonus, Hoffman sign). | Same loss of inhibitory control. |\n| **Fine\u2011motor control** | **Clumsy, inaccurate hand movements**; difficulty with rapid alternating movements (dysdiadochokinesia) and with tasks that require precise finger\u2011to\u2011finger coordination. | The motor cortex contains the \u201chand knob\u201d and the adjacent premotor/supplementary\u2011motor areas that fine\u2011tune digit movements. |\n| **Motor planning / execution** | **Apraxia** (especially \u201cideomotor\u201d apraxia): the patient can understand a command but cannot correctly execute a learned, purposeful movement (e.g., cannot brush teeth or button a shirt despite intact strength). | Premotor and supplementary\u2011motor cortices are essential for sequencing and planning complex, learned actions. |\n| **Facial expression / speech** | **Facial weakness** (lower\u2011face droop) and, if the inferior part of the posterior frontal lobe (Broca\u2019s area) is involved, **expressive (non\u2011fluent) aphasia** with effortful speech. | The motor homunculus includes the lower face; Broca\u2019s area contributes to the motor programming of speech. |\n\n---\n\n### How the deficits map onto the cortical anatomy\n\n| Cortical region (posterior frontal) | Primary motor output | Typical deficit when damaged |\n|------------------------------------|----------------------|------------------------------|\n| **Pre\u2011central gyrus (primary motor cortex)** | Direct corticospinal output to spinal motor neurons | Contralateral weakness, spasticity, hyper\u2011reflexia, Babinski |\n| **Hand\u2011knob area (lateral part of pre\u2011central gyrus)** | Fine hand/finger control | Marked hand clumsiness, loss of dexterity |\n| **Lower\u2011face representation (ventral pre\u2011central gyrus)** | Facial muscles (lower face) | Lower\u2011face droop on opposite side |\n| **Premotor cortex (anterior to the pre\u2011central gyrus)** | Planning of proximal limb movements, integration of sensory cues | Difficulty initiating or coordinating reaching/grasping; \u201cmotor neglect\u201d of the contralateral limb |\n| **Supplementary motor area (medial surface, just anterior to the paracentral lobule)** | Sequencing of complex, internally generated movements | Apraxia, trouble with bimanual tasks, impaired gait initiation |\n| **Inferior frontal gyrus (pars opercularis & pars triangularis \u2013 Broca\u2019s area)** | Motor programming of speech | Non\u2011fluent (Broca\u2019s) aphasia, effortful speech, possible dysarthria |\n\n---\n\n### Clinical pearls\n\n1. **\u201cUpper\u2011motor\u2011neuron\u201d pattern** \u2013 weakness + increased tone + hyper\u2011reflexia + Babinski = lesion above the spinal cord, most often the motor cortex or corticospinal tract.\n2. **Face > arm > leg** \u2013 because the facial and hand representations occupy the most lateral (and therefore most vulnerable) portions of the pre\u2011central gyrus.\n3. **Apraxia is a \u201chigher\u2011order\u201d motor problem** \u2013 strength may be relatively preserved, but the patient cannot perform skilled, purposeful actions.\n4. **Speech problems** appear only when the lesion extends into the inferior frontal region (Broca\u2019s area); pure motor cortex lesions cause only dysarthria (weakness of speech muscles), not true aphasia.\n5. **Recovery** \u2013 because the motor cortex has a relatively large representation and many bilateral connections, some patients regain strength with rehabilitation, but fine\u2011motor deficits and apraxia often persist longer.\n\n---\n\n### Bottom line\n\nA lesion of the posterior frontal lobe (primary motor cortex and its adjacent premotor/supplementary\u2011motor areas) typically produces:\n\n- **Contralateral hemiparesis** (most pronounced in the lower face and hand) with **spasticity** and **hyper\u2011reflexia** (UMN signs).\n- **Loss of fine\u2011motor dexterity** and **difficulty planning or sequencing movements** (apraxia).\n- **Facial weakness** and, if Broca\u2019s area is involved, **expressive aphasia**.\n\nThese findings together reflect the loss of the cortical \u201ccommand center\u201d that initiates, modulates, and plans voluntary movements.",
     "rag_verdict": "CONSISTENT",
-    "no_rag_verdict": "CONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: CONSISTENT"
+    "no_rag_verdict": "INCONSISTENT",
+    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "CONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "8",
@@ -85,7 +106,10 @@
     "no_rag_answer": "The passage indicates that the release of fully mature spermatids \u2013 the process called **spermiation** (the final step of spermiogenesis) \u2013 occurs during **Stage\u202fVIII** of the seminiferous epithelial cycle. At this stage the mature spermatids are shed into the lumen of the seminiferous tubule.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "9",
@@ -96,7 +120,10 @@
     "no_rag_answer": "**Pertussis toxin (PT) \u2013 what it does to the G\u2011protein \u03b1i subunit and the cAMP/PKA pathway**\n\n| Step | Normal (no toxin) | After pertussis toxin exposure |\n|------|-------------------|--------------------------------|\n| **1. GPCR activation** | A ligand (e.g., acetylcholine, norepinephrine) binds a Gi\u2011coupled receptor. | Same ligand binds the same receptor. |\n| **2. G\u2011protein coupling** | The receptor acts as a guanine\u2011nucleotide\u2011exchange factor (GEF) and swaps GDP for GTP on the \u03b1i subunit. The \u03b1i\u2011GTP dissociates from the \u03b2\u03b3 dimer. | The receptor can still cause GDP\u2192GTP exchange, but the \u03b1i\u2011GTP is **blocked from interacting with its downstream effectors** because PT has ADP\u2011ribosylated a specific cysteine (Cys\u2011351 in humans) on the \u03b1i subunit. |\n| **3. Inhibition of adenylate cyclase** | \u03b1i\u2011GTP binds to adenylate cyclase (AC) and **inhibits** its activity \u2192 \u2193 cAMP production. | ADP\u2011ribosylated \u03b1i cannot bind AC \u2192 **no inhibition** of AC. |\n| **4. cAMP levels** | Basal or modestly reduced cAMP, depending on other signals. | **cAMP rises** because AC remains active (or is even stimulated by other Gs\u2011coupled receptors). |\n| **5. PKA activation** | cAMP binds the regulatory subunits of protein kinase A (PKA), releasing the catalytic subunits only when cAMP reaches a threshold. | Higher cAMP \u2192 **greater and more prolonged activation of PKA**. |\n| **6. Cellular/physiological consequences** | Normal regulation of ion channels, metabolism, gene transcription, etc. | Over\u2011activation of PKA can alter ion\u2011channel phosphorylation, increase intracellular calcium, affect immune cell signaling, and contribute to the systemic effects of *Bordetella pertussis* infection (e.g., leukocytosis, respiratory dysfunction). |\n\n---\n\n### Molecular details of the toxin\u2019s action\n\n1. **Structure of PT**  \n   - PT is an AB\u2085 exotoxin: one enzymatically active \u201cA\u201d subunit (S1) and a pentameric \u201cB\u201d binding component (S2\u2011S5).  \n   - The B\u2011pentamer binds to sialic\u2011acid\u2011containing glycoproteins on host cells, allowing the A subunit to enter the cytosol.\n\n2. **Enzymatic activity**  \n   - The S1 subunit is an **ADP\u2011ribosyltransferase**.  \n   - It transfers the ADP\u2011ribose moiety from NAD\u207a to a conserved cysteine (Cys\u2011351) on the \u03b1i (Gi/o) subunit of heterotrimeric G proteins.\n\n3. **Result of ADP\u2011ribosylation**  \n   - The modified \u03b1i cannot interact with its downstream effector (adenylate cyclase) **even when GTP\u2011bound**.  \n   - The \u03b1i subunit remains \u201clocked\u201d in an inactive conformation, effectively **silencing the Gi inhibitory pathway**.\n\n---\n\n### Clinical relevance\n\n| Context | Why the cAMP/PKA increase matters |\n|---------|------------------------------------|\n| **Whooping cough (pertussis) disease** | Elevated cAMP in respiratory epithelial cells leads to impaired mucociliary clearance and contributes to the characteristic cough. In immune cells, high cAMP can suppress chemotaxis and phagocytosis, allowing the bacteria to evade clearance. |\n| **Leukocytosis** | PT\u2011induced cAMP elevation in lymphocytes and neutrophils promotes their release from the bone marrow and reduces their migration into tissues, resulting in the massive peripheral leukocytosis seen in severe pertussis. |\n| **Vaccine safety** | The acellular pertussis vaccine contains a **detoxified** (formally inactivated) PT (often called PT\u2011d or PT\u2011toxoid). The detoxification removes the ADP\u2011ribosyltransferase activity, so the vaccine does **not** cause the cAMP/PKA changes described above. |\n| **Therapeutic considerations** | Agents that raise cAMP (e.g., \u03b2\u2011agonists) can exacerbate symptoms if PT is active, whereas drugs that block adenylate cyclase or PKA (experimental) could theoretically mitigate some toxin\u2011mediated effects, though they are not used clinically for pertussis. |\n\n---\n\n### Bottom\u2011line answer to the question\n\n- **Pertussis toxin ADP\u2011ribosylates the \u03b1i subunit of Gi proteins**, preventing it from inhibiting adenylate cyclase.  \n- Because the inhibitory \u201cbrake\u201d on adenylate cyclase is removed, **cAMP levels rise** in the affected cells.  \n- The elevated cAMP **activates protein kinase A (PKA) more strongly and for a longer duration** than normal.  \n\nThis dysregulated cAMP/PKA signaling contributes to many of the pathophysiologic features of pertussis infection, such as the severe cough, impaired immune cell function, and marked leukocytosis.  \n\nIf you have any follow\u2011up questions\u2014e.g., about how this mechanism influences treatment decisions or vaccine design\u2014feel free to ask!",
     "rag_verdict": "CONSISTENT",
     "no_rag_verdict": "CONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: CONSISTENT"
+    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "CONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "10",
@@ -107,7 +134,10 @@
     "no_rag_answer": "The disorder you\u2019re describing is **Parry\u2011Romberg syndrome (progressive hemifacial atrophy)**.\n\n**Key features that fit this diagnosis**\n\n| Feature | How it fits Parry\u2011Romberg |\n|---------|---------------------------|\n| **Unilateral or bilateral loss of facial fat** | The hallmark of the disease is a slowly progressive atrophy of the subcutaneous fat and soft tissues of the face, most often on one side but occasionally bilateral. |\n| **Appearance of facial paresis** | The loss of bulk and skin tightening can make the face look \u201cdroopy\u201d or weak, mimicking a facial nerve palsy. |\n| **Thin, wrinkled skin** | As the underlying fat disappears, the overlying skin becomes thin, translucent and wrinkled. |\n| **White (depigmented) hair** | Alopecia or premature whitening of the hair in the affected area is common. |\n| **Iris coloration changes** | Ocular involvement may include heterochromia (different iris colors) or pigmentary changes. |\n| **Occasional CNS abnormalities** | Neurologic manifestations (seizures, migraines, focal neurological deficits, white\u2011matter lesions on MRI) occur in a subset of patients. |\n| **Response to immunosuppressive therapy** | Early\u2011stage disease often improves or stabilizes with systemic steroids, methotrexate, mycophenolate, or other immunosuppressants, supporting an autoimmune/inflammatory pathogenesis. |\n\n**Brief overview**\n\n- **Epidemiology:** Usually begins in the first two decades of life; females are affected more often than males.  \n- **Course:** Progressive atrophy over months to years, then a plateau phase.  \n- **Associated findings:** Dental abnormalities, mandibular hypoplasia, ocular involvement (enophthalmos, ptosis, iris changes), and occasionally systemic autoimmune features.  \n- **Management:** Early immunosuppression (high\u2011dose steroids \u00b1 steroid\u2011sparing agents) to halt progression; reconstructive surgery (fat grafting, dermal fillers, orthognathic surgery) is considered after the disease stabilizes.\n\nSo, the condition you\u2019re asking about is **Parry\u2011Romberg syndrome (progressive hemifacial atrophy).**",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "11",
@@ -118,7 +148,10 @@
     "no_rag_answer": "The passage groups the **Psychoticism** domain into three distinct trait categories:\n\n1. **Aggressiveness** \u2013 a tendency toward hostility, anger, and antagonistic behavior.  \n2. **Impulsivity** \u2013 a propensity to act quickly without forethought, often seeking immediate gratification.  \n3. **Tough\u2011mindedness (or non\u2011conformity)** \u2013 a cold, detached, and unconventional stance toward social norms and emotional expression.  \n\nThese three categories together capture the core characteristics that the Psychoticism factor is meant to represent.",
     "rag_verdict": "CONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "12",
@@ -129,7 +162,10 @@
     "no_rag_answer": "**Answer**\n\nErythema (the redness of a sunburn) does not reach its maximum intensity immediately after you come out of the sun.  \nIn most people the visible redness **peaks about 12\u202f\u2013\u202f24\u202fhours after the UV exposure**, with the greatest intensity usually seen around the 24\u2011hour mark.  \n\n---\n\n### Why the delay?\n\n| Time after exposure | What\u2019s happening in the skin |\n|---------------------|------------------------------|\n| **0\u20132\u202fh**            | UV photons have damaged DNA, keratinocytes, and blood\u2011vessel endothelium, but the inflammatory cascade has not yet produced visible redness. |\n| **2\u20136\u202fh**            | Early release of cytokines (e.g., IL\u20111, TNF\u2011\u03b1) and prostaglandins begins; a faint pink hue may start to appear. |\n| **6\u201312\u202fh**           | Inflammatory mediators increase, causing vasodilation of superficial dermal vessels; erythema becomes more obvious. |\n| **12\u201324\u202fh**          | **Peak vasodilation** \u2013 the highest concentration of histamine, bradykinin, and prostaglandin E\u2082 leads to maximal redness. |\n| **24\u201348\u202fh**          | The erythema slowly starts to subside; the skin may become tender, swollen, or develop vesicles. |\n| **48\u202fh\u20135\u202fdays**      | Healing phase \u2013 desquamation (peeling) and possible hyperpigmentation. |\n\nThe exact timing can vary with:\n\n* **Skin phototype** \u2013 lighter skin (Fitzpatrick I\u2011II) often shows a quicker, more intense response.  \n* **UV dose** \u2013 higher UV\u2011B doses accelerate the inflammatory response.  \n* **Age and health** \u2013 older or immunocompromised individuals may have a blunted or delayed reaction.  \n\n---\n\n### Practical take\u2011away\n\n- **If you notice a faint pinkness within the first few hours, it\u2019s the early stage of sunburn.**  \n- **Expect the worst of the redness around the 24\u2011hour point.**  \n- **Apply soothing measures (cool compresses, aloe vera, NSAIDs) as soon as you feel the burn, not waiting for the peak, to reduce inflammation and discomfort.**  \n\n---\n\n**References**\n\n1. **American Academy of Dermatology (AAD).** \u201cSunburn: What It Is and How to Treat It.\u201d Updated 2023.  \n2. **M. R. Krutmann & H. R. Schmitt.** *Photodermatology: Clinical and Experimental Aspects.* 2nd ed., Springer, 2021 \u2013 Chapter 4, \u201cPathophysiology of UV\u2011induced erythema.\u201d  \n3. **B. R. Bickers & J. A. Lim.** \u201cUV\u2011induced skin inflammation and erythema.\u201d *Journal of Investigative Dermatology*, vol. 140, no. 5, 2020, pp. 1012\u20111020.  \n\n--- \n\n**Bottom line:** After a sunny day, the redness from a sunburn typically reaches its maximum about **12\u201324\u202fhours later**, most often around the **24\u2011hour** mark. If you\u2019re planning to be outdoors, remember that the damage is already happening even before any visible sign appears. Use broad\u2011spectrum sunscreen, protective clothing, and reapply every 2\u202fhours to prevent that delayed peak erythema.",
     "rag_verdict": "CONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "13",
@@ -140,7 +176,10 @@
     "no_rag_answer": "Paroxysmal hemicrania (PH) is a rare, short\u2011lasting, unilateral headache that almost always responds dramatically to indomethacin. In clinical practice the **dose\u2011response relationship is used as a diagnostic clue**:\n\n* **Typical therapeutic range for primary PH:** 25\u202f\u2013\u202f150\u202fmg of indomethacin per day (often given in divided doses, e.g., 25\u202fmg three times daily). Most patients achieve complete pain relief at doses \u2264100\u202fmg/day, and many respond at \u226450\u202fmg/day.  \n* **When the required dose climbs above ~150\u202fmg per day**, the likelihood that the headache is **secondary** (i.e., \u201cindomethacin\u2011responsive secondary paroxysmal hemicrania\u201d) increases. In other words, if a patient needs more than about 150\u202fmg/day to obtain relief, clinicians should search for an underlying disorder (e.g., structural brain lesion, infection, vascular abnormality, or other systemic disease) that may be mimicking primary PH.\n\n### Why the 150\u202fmg/day threshold matters\n1. **Pharmacologic ceiling:** Indomethacin\u2019s analgesic effect on PH tends to plateau around 100\u2013150\u202fmg/day. Doses higher than this rarely provide additional benefit for primary PH.\n2. **Side\u2011effect profile:** Above 150\u202fmg/day the risk of gastrointestinal, renal, and central nervous system adverse effects rises sharply, making clinicians more cautious and prompting a re\u2011evaluation of the diagnosis.\n3. **Red flag for secondary causes:** Several case series have reported that patients who required >150\u202fmg/day often had an identifiable secondary cause (e.g., pituitary adenoma, cavernous sinus lesion, sinusitis, or systemic inflammatory disease). The high dose may be \u201cmasking\u201d the underlying pathology rather than treating a true primary PH.\n\n### Practical take\u2011away for clinicians\n| Situation | Typical indomethacin dose | Interpretation |\n|-----------|---------------------------|----------------|\n| **Typical primary PH** | 25\u2013100\u202fmg/day (often 50\u202fmg/day) | Strong diagnostic support if pain resolves completely. |\n| **Borderline response** | 100\u2013150\u202fmg/day | Still compatible with primary PH, but monitor closely for side effects. |\n| **High\u2011dose requirement** | **>150\u202fmg/day** | **Red flag** \u2013 consider imaging (MRI brain with contrast, MR angiography) and laboratory work\u2011up to rule out secondary causes. |\n\n### Bottom line\n- **Secondary paroxysmal hemicrania becomes more likely when the effective indomethacin dose exceeds roughly 150\u202fmg per day.** At that point, a thorough evaluation for an underlying structural or systemic disorder is warranted.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "14",
@@ -151,7 +190,10 @@
     "no_rag_answer": "The American Academy of Sleep Medicine (AASM) now refers to the combined former stages\u202f3\u202fand\u202f4 as **\u201cN3\u201d** (non\u2011REM stage\u202f3, also called slow\u2011wave sleep). In the 2007 AASM scoring manual, stages\u202f3 and\u202f4 were merged into a single N3 category because they share the same electrophysiological characteristics (predominantly\u202f\u03b4\u2011wave activity).",
     "rag_verdict": "CONSISTENT",
     "no_rag_verdict": "CONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: CONSISTENT"
+    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "CONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "15",
@@ -160,9 +202,12 @@
     "question": "Which placental transporters efflux glyburide from the fetal circulation, and how does its high maternal protein binding affect fetal drug levels?",
     "rag_answer": "Glyburide is pumped out of the fetal circulation by the breast\u2011cancer\u2011resistance\u2011protein (BCRP) transporter and by the multidrug\u2011resistance\u2011associated protein\u202f3 (MRP3), both situated in the placental brush\u2011border membrane. In addition, the drug binds very tightly to maternal plasma proteins (more than 98\u202f% bound), leaving only a small free fraction to cross the placenta; this high degree of protein binding further limits the amount that reaches the fetus, resulting in fetal concentrations that are markedly lower than maternal levels.",
     "no_rag_answer": "**Answer**\n\nGlyburide (also called glibenclamide) is a second\u2011generation sulfonylurea that is sometimes used to treat gestational diabetes because it can be taken orally and, unlike insulin, does not require injection.  Two pharmacokinetic features are especially important for its fetal exposure:\n\n| Feature | What it means for the fetus |\n|---------|-----------------------------|\n| **Maternal plasma protein binding** \u2013\u202f\u2248\u202f96\u201398\u202f% (mainly to albumin) | Only the un\u2011bound (free) fraction can cross biological membranes, including the placenta. The very high binding therefore limits the amount of drug that is available to diffuse from the maternal to the fetal side. |\n| **Placental efflux transporters** \u2013\u202fproteins that pump drug molecules back into the maternal circulation | Even the small amount of free glyburide that does reach the syncytiotrophoblast is actively removed, further lowering fetal concentrations. |\n\nBelow is a concise summary of the transporters that have been shown (in vitro, ex\u2011vivo placental perfusion, or animal models) to **efflux glyburide** and the mechanistic consequence of high maternal protein binding.\n\n---\n\n## 1. Placental transporters that efflux glyburide\n\n| Transporter | Gene (ABC family) | Evidence that glyburide is a substrate | Relative contribution in the human placenta (approx.) |\n|-------------|-------------------|----------------------------------------|------------------------------------------------------|\n| **Breast Cancer Resistance Protein (BCRP)** | **ABCG2** | \u2022 In vitro vesicle assays (MDCK\u2011II cells transfected with human BCRP) show >\u202f5\u2011fold higher transport of glyburide in the B\u2192A direction (BCRP\u2011mediated efflux).<br>\u2022 Human placental perfusion studies demonstrate that inhibition of BCRP (with Ko143) raises fetal glyburide concentrations by ~2\u20113\u2011fold. | BCRP is highly expressed on the **maternal (apical) brush\u2011border membrane** of syncytiotrophoblasts, making it the dominant efflux pump for many sulfonylureas, including glyburide. |\n| **P\u2011glycoprotein (P\u2011gp)** | **ABCB1** | \u2022 ATP\u2011dependent transport of glyburide observed in P\u2011gp over\u2011expressing cell lines (LLC\u2011PK1, Caco\u20112).<br>\u2022 Inhibition with verapamil or tariquidar in placental explants increases intracellular glyburide accumulation. | P\u2011gp is present on both the apical (maternal) and basal (fetal) membranes, but its apical expression is higher; it contributes to ~20\u201130\u202f% of total efflux capacity for glyburide. |\n| **Multidrug Resistance\u2011Associated Protein 1 (MRP1)** | **ABCC1** | \u2022 Vesicular transport assays show modest glyburide translocation (\u2248\u202f1.5\u2011fold).<br>\u2022 Knock\u2011down of ABCC1 in trophoblast cell lines modestly raises intracellular glyburide. | MRP1 is mainly on the **basal (fetal) membrane**; its role is secondary, helping to move any drug that reaches the fetal side back toward the maternal side. |\n| **Multidrug Resistance\u2011Associated Protein 2 (MRP2)** | **ABCC2** | \u2022 In vitro studies with MRP2\u2011expressing vesicles demonstrate glyburide transport, though with lower affinity than BCRP. | MRP2 is also apically located but expressed at lower levels than BCRP; it adds a \u201cbackup\u201d efflux capacity. |\n\n**Key take\u2011away:**  \n- **BCRP (ABCG2) is the principal efflux transporter for glyburide in the human placenta.**  \n- P\u2011gp (ABCB1) and, to a lesser extent, MRP1/2 (ABCC1/2) provide additional protection, especially when BCRP activity is saturated or inhibited.\n\n---\n\n## 2. How high maternal protein binding influences fetal drug levels\n\n1. **Only free drug can cross the placenta.**  \n   - Glyburide\u2019s plasma protein binding of ~96\u201398\u202f% means that **<\u202f2\u202f%** of the total maternal concentration is unbound.  \n   - The free fraction (fu) is the driver for passive diffusion across the syncytiotrophoblast.  \n\n2. **Reduced driving force for diffusion.**  \n   - Because the free concentration on the maternal side is low, the concentration gradient that would otherwise push glyburide into the fetal circulation is shallow.  \n\n3. **Efflux transporters act on the same free fraction.**  \n   - The small amount of free glyburide that does reach the trophoblast membrane is promptly recognized by BCRP (and P\u2011gp). These pumps use ATP to move the drug back into the maternal intervillous space, **preventing accumulation on the fetal side**.  \n\n4. **Resulting fetal exposure is low.**  \n   - Clinical pharmacokinetic studies in pregnant women taking therapeutic doses of glyburide report **umbilical cord plasma concentrations that are 5\u201310\u202f% of maternal total concentrations**, and when corrected for protein binding, the **free fetal concentration is often <\u202f1\u202f% of the maternal free concentration**.  \n   - In many cases, the fetal-to-maternal ratio (F/M) for total glyburide is <\u202f0.05, reflecting the combined effect of high protein binding and active efflux.  \n\n5. **Implications for safety.**  \n   - Because fetal exposure is limited, glyburide is generally considered safe for the fetus when used at standard gestational\u2011diabetes doses.  \n   - However, **situations that reduce protein binding** (e.g., hypoalbuminemia, competition with other highly bound drugs) or **inhibit BCRP/P\u2011gp** (e.g., co\u2011administration of certain antibiotics, antifungals, or herbal supplements) could raise fetal levels and should be monitored.\n\n---\n\n## 3. Practical points for clinicians & patients\n\n| Situation | Expected effect on fetal glyburide exposure | Clinical recommendation |\n|-----------|----------------------------------------------|--------------------------|\n| **Normal pregnancy, normal albumin (~3.5\u20134.5\u202fg/dL)** | Low fetal exposure (F/M\u202f\u2248\u202f0.03\u20130.07). | Continue standard glyburide dosing; monitor maternal glucose. |\n| **Maternal hypoalbuminemia (e.g., pre\u2011eclampsia, nephrotic syndrome)** | \u2191 free fraction \u2192 modest rise in placental transfer. | Consider checking free glyburide levels or switching to insulin if albumin <\u202f2.5\u202fg/dL. |\n| **Co\u2011administration of a strong BCRP inhibitor (e.g., elacridar, certain flavonoids, some macrolide antibiotics)** | \u2193 efflux \u2192 \u2191 fetal concentrations. | Review medication list; avoid known BCRP inhibitors if possible. |\n| **Co\u2011administration of a strong P\u2011gp inhibitor (e.g., quinidine, verapamil)** | Similar effect but usually less pronounced than BCRP inhibition. | Same as above; monitor maternal glucose and fetal growth. |\n| **High\u2011dose glyburide (>\u202f5\u202fmg BID) or prolonged therapy** | Saturation of BCRP may occur \u2192 slight increase in fetal exposure. | Dose\u2011adjust according to glucose targets; avoid unnecessary dose escalation. |\n\n---\n\n## 4. Bottom line\n\n- **BCRP (ABCG2) is the dominant placental efflux transporter that pumps glyburide back into the maternal circulation, with P\u2011gp (ABCB1) and the MRPs providing secondary protection.**  \n- **Because >\u202f96\u202f% of glyburide is bound to maternal plasma proteins, only a tiny free fraction is available to cross the placenta, and the efflux pumps quickly remove that fraction.** Consequently, fetal drug levels are very low under normal circumstances, which explains the relatively favorable safety profile of glyburide for treating gestational diabetes.  \n\n*References (selected)*  \n\n1. **Koren G, et al.** Placental transport of glyburide: role of BCRP and P\u2011gp. *Clin Pharmacol Ther.* 2010;88(5):735\u2011743.  \n2. **Myllynen P, et al.** In vitro assessment of glyburide as a substrate of human ABC transporters. *Drug Metab Dispos.* 2012;40(9):1795\u20111802.  \n3. **Liu J, et al.** Umbilical cord concentrations of glyburide in women with gestational diabetes. *Diabetes Care.* 2014;37(5):1245\u20111249.  \n4. **Gao Y, et al.** Effect of maternal hypoalbuminemia on placental drug transfer. *Placenta.* 2018;62:1\u20117.  \n5. **Kelley PW, et al.** Clinical pharmacology of sulfonylureas in pregnancy. *Obstet Gynecol Clin North Am.* 2021;48(2):277\u2011295.  \n\nFeel free to ask if you need more detail on any of the transporters, dosing considerations, or how to manage drug\u2011drug interactions in pregnancy.",
-    "rag_verdict": "INCONSISTENT",
-    "no_rag_verdict": "CONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT"
+    "rag_verdict": "CONSISTENT",
+    "no_rag_verdict": "INCONSISTENT",
+    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "CONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "16",
@@ -173,7 +218,10 @@
     "no_rag_answer": "In the large prospective screening study conducted by the **Maternal\u2011Fetal Medicine Units (MFMU) Network**, roughly **2\u202f\u2013\u202f3\u202f% of the pregnant women screened were identified as having subclinical hypothyroidism**.  \n\n- The MFMU investigators screened about 10,000 pregnant women in the first trimester.  \n- Using the commonly accepted definition of subclinical hypothyroidism (TSH\u202f>\u202f2.5\u202fmIU/L with a normal free\u2011T4), **\u22482.5\u202f%** of the cohort met criteria for subclinical hypothyroidism.  \n- For comparison, overt hypothyroidism was found in only ~0.3\u202f% of the same group, and isolated hypothyroxinemia in ~0.5\u202f%.\n\n*Reference:*  \nAlexander, E.\u202fK., et\u202fal. \u201cThe prevalence of thyroid disease in pregnancy: a prospective cohort study.\u201d **Obstetrics & Gynecology**, 2004; 104(5): 1023\u20111030. (MFMU Network).  \n\nSo, the answer is **about 2.5\u202f%** of the screened pregnant women.",
     "rag_verdict": "CONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "17",
@@ -182,9 +230,12 @@
     "question": "Which spinal cord levels primarily innervate the muscles that move the shoulder joint?",
     "rag_answer": "The muscles that move the shoulder are primarily supplied by motor neurons in the cervical enlargement of the spinal cord.",
     "no_rag_answer": "**Short answer:**  \nThe muscles that move the shoulder joint are supplied mainly by spinal cord segments **C5\u202f\u2013\u202fC6**, with additional contributions from C4, C7 and, to a lesser extent, T1.\n\n---\n\n### Why C5\u2011C6 are the key levels\n\n1. **Brachial plexus origin** \u2013 The brachial plexus, which gives rise to virtually all the nerves that innervate the shoulder\u2011girdle muscles, is formed from the ventral rami of **C5, C6, C7, C8, and T1**.  \n2. **Major shoulder\u2011joint nerves** \u2013 The nerves that directly act on the deltoid, rotator\u2011cuff, and other shoulder movers receive most of their fibers from **C5 and C6**:\n   - **Axillary nerve (C5\u2011C6)** \u2192 deltoid, teres minor  \n   - **Suprascapular nerve (C5\u2011C6)** \u2192 supraspinatus, infraspinatus  \n   - **Upper and lower subscapular nerves (C5\u2011C6)** \u2192 subscapularis, teres major  \n   - **Musculocutaneous nerve (C5\u2011C7)** \u2192 biceps brachii, brachialis, coracobrachialis (these muscles assist in shoulder flexion and stabilization)  \n   - **Thoracodorsal nerve (C6\u2011C8)** \u2192 latissimus dorsi (extends, adducts, and internally rotates the humerus)  \n\n3. **Clinical correlation** \u2013 Injuries that affect the C5\u2011C6 roots (e.g., a C5\u2011C6 radiculopathy or a \u201cErb\u2019s palsy\u201d pattern) typically produce weakness of shoulder abduction, external rotation, and flexion, underscoring the dominant role of these levels.\n\n---\n\n### Contributions from adjacent levels\n\n| Spinal level | Typical contribution to shoulder\u2011joint muscles |\n|--------------|-----------------------------------------------|\n| **C4**       | Minor contribution via the **suprascapular** and **axillary** nerves; helps with shoulder elevation (e.g., trapezius via accessory nerve, but not a primary mover). |\n| **C7**       | Supplies the **musculocutaneous** nerve (especially the brachialis) and part of the **radial** nerve, aiding in elbow extension and some shoulder stabilization. |\n| **T1**       | Provides fibers to the **lower trunk** of the brachial plexus, contributing to the **medial** (ulnar) side of the plexus; important for fine motor control of the hand but also gives a small contribution to the **pectoralis major** and **latissimus dorsi**. |\n\nThese additional levels are usually \u201cbackup\u201d or synergistic inputs rather than the primary drivers of shoulder movement.\n\n---\n\n### Quick reference of the main shoulder\u2011joint muscles and their innervation\n\n| Muscle (primary action) | Nerve (spinal levels) |\n|--------------------------|-----------------------|\n| **Deltoid** (abduction) | Axillary (C5\u2011C6) |\n| **Supraspinatus** (initiate abduction) | Suprascapular (C5\u2011C6) |\n| **Infraspinatus** (external rotation) | Suprascapular (C5\u2011C6) |\n| **Subscapularis** (internal rotation) | Upper & lower subscapular nerves (C5\u2011C6) |\n| **Teres minor** (external rotation) | Axillary (C5\u2011C6) |\n| **Teres major** (internal rotation, adduction) | Lower subscapular nerve (C5\u2011C6) |\n| **Coracobrachialis** (flexion, adduction) | Musculocutaneous (C5\u2011C7) |\n| **Biceps brachii** (flexion, supination) | Musculocutaneous (C5\u2011C6) |\n| **Latissimus dorsi** (extension, adduction, internal rotation) | Thoracodorsal (C6\u2011C8) |\n| **Pectoralis major** (flexion, adduction, internal rotation) | Medial & lateral pectoral nerves (C5\u2011T1, mainly C6\u2011C8) |\n\n---\n\n### Bottom line\n\n- **Primary spinal cord levels:** **C5 and C6**  \n- **Additional levels that may assist:** **C4, C7, and T1**  \n\nIf you\u2019re evaluating a patient with shoulder weakness, checking the integrity of the C5\u2011C6 roots (e.g., via dermatomal sensation, reflexes, and EMG) is usually the first step.",
-    "rag_verdict": "CONSISTENT",
+    "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "18",
@@ -195,7 +246,10 @@
     "no_rag_answer": "**Short answer:**  \nWhen cells run out of amino acids, a kinase called **GCN2** phosphorylates the \u03b1\u2011subunit of the translation initiation factor **eIF2**. This modification lowers the amount of active eIF2\u2011GTP\u2011Met\u2011tRNAi (the \u201cternary complex\u201d) that is available for starting new protein\u2011synthesis events, so **overall protein synthesis drops**.  \n\nThe **GCN4 mRNA** (in yeast) \u2013 and its mammalian counterpart **ATF4** \u2013 is built with a special arrangement of short upstream open\u2011reading frames (**uORFs**) in its 5\u2032\u2011leader. Those uORFs make GCN4 translation *sensitive* to the level of ternary complex. When ternary\u2011complex levels are high (normal growth), ribosomes quickly re\u2011acquire eIF2\u2011GTP after translating the first uORF and then re\u2011initiate at the downstream inhibitory uORFs, which **blocks translation of the main GCN4 coding region**.  \n\nWhen eIF2 is phosphorylated and ternary\u2011complex levels fall (amino\u2011acid starvation), ribosomes **pause longer** after finishing the first uORF before they can re\u2011load eIF2\u2011GTP. Because of that delay, many ribosomes **miss the inhibitory uORFs** and instead resume scanning until they reach the genuine GCN4 start codon. The net result is a **selective increase in GCN4 protein synthesis** even though the cell\u2019s overall translation rate is reduced.\n\n---\n\n### Step\u2011by\u2011step mechanistic picture\n\n| Step | Normal (plentiful amino acids) | Starved (amino\u2011acid depletion) |\n|------|--------------------------------|---------------------------------|\n| 1. **eIF2 status** | eIF2\u03b1 is mostly un\u2011phosphorylated \u2192 abundant eIF2\u2011GTP\u2011Met\u2011tRNAi (ternary complex) | GCN2 kinase phosphorylates eIF2\u03b1 \u2192 eIF2\u2011GTP is scarce; ternary complex is low |\n| 2. **Ribosome initiation** | 40S ribosome binds the 5\u2032 cap, scans, initiates at **uORF1** (a short, permissive ORF) | Same initial binding and translation of uORF1 |\n| 3. **Re\u2011initiation after uORF1** | Because ternary complex is plentiful, the 40S quickly re\u2011acquires eIF2\u2011GTP and re\u2011initiates at **uORF2, uORF3, or uORF4** (each overlaps the GCN4 start codon). These uORFs act as \u201croad\u2011blocks\u201d \u2192 **GCN4 ORF is not translated**. | Low ternary\u2011complex levels mean the 40S ribosome **fails to re\u2011load eIF2\u2011GTP quickly enough**. It therefore **skips the downstream inhibitory uORFs** and continues scanning. When it finally finds a ternary complex, it does so at the **GCN4 start codon**, allowing translation of the functional GCN4 protein. |\n| 4. **Outcome** | High global protein synthesis; GCN4 protein is low. | Global protein synthesis drops (because most mRNAs need the ternary complex), but **GCN4 protein rises sharply**, turning on genes needed for amino\u2011acid biosynthesis and stress adaptation. |\n\n---\n\n### Why does this work only for GCN4 (and ATF4)?\n\n1. **Multiple uORFs with specific spacing** \u2013 The distance between uORF1 and the next uORFs is tuned so that a ribosome that re\u2011acquires ternary complex **too early** will start at an inhibitory uORF, whereas a ribosome that re\u2011acquires it **later** will bypass them and land on the main ORF.\n\n2. **Requirement for a \u201cre\u2011initiation\u201d step** \u2013 Most mRNAs do not have this built\u2011in checkpoint; they simply need a ternary complex for the first round of initiation. GCN4\u2019s translation is therefore *regulated* by the *availability* of that complex, turning a global down\u2011regulation into a **selective up\u2011regulation**.\n\n3. **Evolutionary advantage** \u2013 The cell can quickly switch on a transcriptional program (via GCN4) that restores amino\u2011acid pools while conserving resources by shutting down most other protein synthesis.\n\n---\n\n### Clinical / biomedical relevance\n\n- **Human parallel \u2013 ATF4**: In mammals, the same principle governs the transcription factor ATF4, which is crucial for the integrated stress response (ISR). ATF4 drives expression of genes that help cells survive nutrient deprivation, oxidative stress, and ER stress.\n\n- **Disease connections**: Dysregulation of the eIF2\u03b1\u2011phosphorylation pathway and ATF4 translation is implicated in neurodegeneration, cancer, and metabolic disorders. Some therapeutic strategies aim to **modulate eIF2\u03b1 kinases** (e.g., GCN2, PERK) to either boost protective ATF4 responses or blunt maladaptive ones.\n\n- **Potential interventions**: Small\u2011molecule inhibitors of GCN2 (e.g., **GCN2iB**) are being explored in cancer models where tumors rely on the amino\u2011acid\u2011starvation response. Conversely, activators of eIF2\u03b1 phosphorylation (like **salubrinal**, which inhibits the phosphatase that de\u2011phosphorylates eIF2\u03b1) can enhance ATF4\u2011mediated protective pathways in models of neuro\u2011injury.\n\n---\n\n### Bottom line for you\n\n- **Amino\u2011acid starvation \u2192 eIF2\u03b1 phosphorylation \u2192 less ternary complex \u2192 global translation slowdown.**\n- **GCN4 mRNA is specially designed (with upstream uORFs) to *sense* the low ternary\u2011complex condition.** When the complex is scarce, ribosomes skip the inhibitory uORFs and finally translate the GCN4 coding region, so **GCN4 protein levels rise** while most other proteins fall.\n- This clever \u201cmolecular switch\u201d lets the cell prioritize the production of a stress\u2011response factor (GCN4/ATF4) exactly when it is most needed.",
     "rag_verdict": "CONSISTENT",
     "no_rag_verdict": "CONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: CONSISTENT"
+    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "CONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "19",
@@ -206,7 +260,10 @@
     "no_rag_answer": "The article you\u2019re looking for is:\n\n**Meralgia Paresthetica: A Clinical Study of 150 Cases**  \n*JAMA* (Journal of the American Medical Association) \u2013 1938; **110**(22):\u202f1155\u20111159.  \n\nThis 1938 JAMA paper presented a series of 150 patients with meralgia paresthetica (also known as Bernhardt\u2011Roth syndrome).",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "20",
@@ -217,7 +274,10 @@
     "no_rag_answer": "The rash that is characteristic of Rocky\u202fMountain spotted fever (RMSF) usually does **not** appear on the first day of illness.  In most series the rash develops 2\u20134\u202fdays after the onset of fever and other systemic symptoms.\n\n- **Frequency on day\u202f1:** only about **10\u202f% (roughly 1 in 10 patients)** have a rash that is already visible on the first day of illness.  \n- **Overall occurrence:** a rash is eventually seen in roughly 70\u201380\u202f% of patients, but it typically appears after the first 24\u201348\u202fhours.\n\n**Why this matters**\n\n- The absence of a rash early in the course does **not** rule out RMSF.  \n- Because the disease can progress rapidly to severe complications, clinicians are advised to start empiric doxycycline when RMSF is suspected, even if the rash is absent or appears later.\n\n**Sources**\n\n- Centers for Disease Control and Prevention (CDC) \u2013 \u201cRocky Mountain Spotted Fever\u201d clinical overview.  \n- Parola P, Raoult D. *Rickettsial diseases.* N Engl J Med. 2005;353:  162\u2013170. (Reports rash in ~70\u201180\u202f% of cases, with only ~10\u202f% present on day\u202f1.)  \n- Walker DH. *Rickettsial diseases.* In: Mandell, Douglas, and Bennett\u2019s Principles and Practice of Infectious Diseases, 9th ed. 2020. (Notes early rash in \u226420\u202f% of patients.)\n\nSo, **\u224810\u202f%** of RMSF patients have a rash on the first day of illness.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "21",
@@ -228,7 +288,10 @@
     "no_rag_answer": "The key randomized trial that directly compared tenecteplase with alteplase in patients with acute ischemic stroke is the **NOR\u2011TEST (Norwegian Tenecteplase Stroke Trial)**.\n\n- **Trial name:** NOR\u2011TEST (Norwegian Tenecteplase Stroke Trial)  \n- **Design:** Multicenter, prospective, randomized, open\u2011label, blinded\u2011endpoint (PROBE) trial comparing tenecteplase (0.4\u202fmg/kg) with standard\u2011dose alteplase (0.9\u202fmg/kg) given within 4.5\u202fhours of symptom onset.  \n- **Primary outcome:** Functional outcome at 90\u202fdays measured by the modified Rankin Scale.  \n- **Result:** Tenecteplase was non\u2011inferior to alteplase for functional outcome and safety endpoints.\n\n- **Published in:** **Lancet Neurology**  \n- **Year of publication:** **2017** (Lancet Neurol\u202f2017;\u202f16: 965\u2011975)\n\nThus, the randomized trial you\u2019re asking about is the NOR\u2011TEST trial, which appeared in *Lancet Neurology* in 2017.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "22",
@@ -237,9 +300,12 @@
     "question": "What is the recommended daily dose of ursodeoxycholic acid (UDCA) for gallstone dissolution therapy?",
     "rag_answer": "The usual regimen is about\u202f10\u202fto\u202f15\u202fmg of ursodeoxycholic acid per kilogram of body weight each day.",
     "no_rag_answer": "**Ursodeoxycholic acid (UDCA) dose for gallstone dissolution**\n\n| Parameter | Typical recommendation |\n|-----------|------------------------|\n| **Dose range** | **8\u202f\u2013\u202f10\u202fmg/kg body weight per day** (most commonly used) |\n| **Maximum dose** | Up to **13\u202f\u2013\u202f15\u202fmg/kg per day** in some protocols, but higher doses are usually reserved for special situations (e.g., primary biliary cholangitis) and are not routinely needed for gallstone dissolution. |\n| **Frequency** | Divided into **2\u20133 oral doses** (e.g., morning, midday, and/or evening). |\n| **Duration of therapy** | Usually **6\u202fmonths to 2\u202fyears**, with periodic imaging (ultrasound or CT) to assess stone size and dissolution. |\n| **Formulation** | Oral tablets (often 250\u202fmg or 300\u202fmg) or capsules; take with meals to improve tolerability. |\n\n### How the dose is calculated (example)\n\n1. **Determine weight** \u2013 e.g., a patient weighs 70\u202fkg.  \n2. **Apply the dose range** \u2013 8\u202fmg/kg\u202f\u00d7\u202f70\u202fkg\u202f=\u202f560\u202fmg/day; 10\u202fmg/kg\u202f\u00d7\u202f70\u202fkg\u202f=\u202f700\u202fmg/day.  \n3. **Select a practical regimen** \u2013 600\u202fmg/day (2\u202f\u00d7\u202f300\u202fmg tablets) divided twice daily is a common prescription for a 70\u2011kg adult.\n\n### Who benefits most from UDCA dissolution therapy?\n\n- **Cholesterol gallstones** that are \u2264\u202f15\u202fmm in diameter.  \n- **Functioning gallbladder** (evidenced by normal ejection fraction on a HIDA scan or ultrasound).  \n- Patients who are **poor surgical candidates** or who prefer a non\u2011surgical approach.  \n- Those without **biliary obstruction, severe inflammation, or gallbladder polyps**.\n\n### Monitoring & Follow\u2011up\n\n- **Imaging** (ultrasound) every 3\u20136\u202fmonths to document stone size reduction.  \n- **Liver function tests** at baseline and periodically (UDCA is generally well\u2011tolerated but can cause mild transaminase elevations).  \n- **Symptom assessment** \u2013 if biliary colic persists or complications develop, surgical consultation should be reconsidered.\n\n### Common side effects\n\n- Mild gastrointestinal upset (nausea, diarrhea, abdominal discomfort).  \n- Rarely, rash or elevated liver enzymes.  \n\n### Important safety notes\n\n- **Contraindicated** in patients with complete biliary obstruction, severe liver disease, or known hypersensitivity to UDCA.  \n- **Pregnancy & lactation** \u2013 generally considered safe, but the decision should be individualized by the treating physician.  \n- **Drug interactions** are minimal, but inform the prescriber of all concurrent medications.\n\n---\n\n#### Bottom line\nFor most adults, the standard regimen for gallstone dissolution is **8\u201310\u202fmg/kg/day of UDCA**, divided into two or three doses, and continued for several months with periodic imaging to gauge effectiveness.\n\n> **Disclaimer:** This information is for educational purposes only and does not replace personalized medical advice. Dosage should be individualized by a qualified healthcare professional based on your specific clinical situation, weight, liver function, and any other comorbid conditions. Always follow the prescribing instructions of your treating physician.",
-    "rag_verdict": "INCONSISTENT",
-    "no_rag_verdict": "CONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT"
+    "rag_verdict": "CONSISTENT",
+    "no_rag_verdict": "INCONSISTENT",
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "CONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "23",
@@ -250,7 +316,10 @@
     "no_rag_answer": "Colles\u2019 fascia is firmly fixed to the **posterior margin of the perineal membrane (including the perineal body)**, which stops it from spreading into the anal triangle.\u202fLaterally it is **adhered to the fascia lata of the thigh**, preventing it from extending onto the thigh.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "24",
@@ -261,7 +330,10 @@
     "no_rag_answer": "I\u2019m sorry, but I don\u2019t have the passage you\u2019re referring to, so I can\u2019t provide the specific 10\u2011year cumulative mortality rate for follicular thyroid cancer mentioned there. If you can share the relevant excerpt, I\u2019ll be happy to help interpret it.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "25",
@@ -270,9 +342,12 @@
     "question": "For the anterior chest approach to endoscopic thyroidectomy, how far below the clavicle is the skin incision made, and what CO\u2082 insufflation pressure is used to create the working space?",
     "rag_answer": "The skin incision for the anterior chest approach is placed about\u202f3\u202fto\u202f5\u202fcm below the border of the ipsilateral clavicle. A carbon\u2011dioxide insufflation pressure of roughly\u202f4\u202fmm\u202fHg is then used to create the working space.",
     "no_rag_answer": "The skin incision for the anterior\u2011chest (mid\u2011line) endoscopic thyroidectomy is placed roughly **2\u202fcm inferior to the clavicle**.  \nA low\u2011pressure CO\u2082 pneumodissection is then created, typically using an insufflation pressure of **6\u20138\u202fmm\u202fHg** (most surgeons set it at 6\u202fmm\u202fHg).",
-    "rag_verdict": "INCONSISTENT",
-    "no_rag_verdict": "CONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT"
+    "rag_verdict": "CONSISTENT",
+    "no_rag_verdict": "INCONSISTENT",
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "CONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "26",
@@ -283,7 +358,10 @@
     "no_rag_answer": "The passage cites **Group\u202fB\u202fStreptococcus (Streptococcus\u202fagalactiae)** as an example of a transcervical (ascending) bacterial infection.",
     "rag_verdict": "CONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "27",
@@ -294,7 +372,10 @@
     "no_rag_answer": "Newborn red blood cells contain much less of the enzyme cytochrome\u202fb5 reductase (the NADH\u2011dependent methemoglobin reductase) and have lower NADH/NADPH reserves than adult cells, so they convert methemoglobin back to functional hemoglobin less efficiently. In addition, fetal hemoglobin (Hb\u202fF) is more readily oxidized to methemoglobin, further limiting the newborn\u2019s overall reduction capacity. Consequently, a newborn\u2019s ability to clear methemoglobin is roughly half that of an adult.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "28",
@@ -304,8 +385,11 @@
     "rag_answer": "The cut point most often used to trigger a prostate biopsy is a total PSA of\u202f4\u202fng/mL or higher. Men whose PSA reaches or exceeds this level are typically considered for biopsy.",
     "no_rag_answer": "A prostate\u2011specific antigen (PSA) level of **\u2248\u202f4\u202fng/mL** is the traditional threshold at which many clinicians consider recommending a prostate biopsy.\u202fIn younger or higher\u2011risk men, some providers use a lower cut\u2011off (e.g.,\u202f2.5\u202fng/mL) together with other factors such as PSA velocity or density.",
     "rag_verdict": "CONSISTENT",
-    "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT"
+    "no_rag_verdict": "CONSISTENT",
+    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "29",
@@ -314,9 +398,12 @@
     "question": "According to the passage, what proportion of newly synthesized cytoplasmic proteins are defective ribosomal products (DRiPs)?",
     "rag_answer": "The passage does not provide a specific figure or proportion for how many newly synthesized cytoplasmic proteins are defective ribosomal products (DRiPs).",
     "no_rag_answer": "About one\u2011third of newly synthesized cytoplasmic proteins\u2014roughly 30\u202f%\u2014are classified as defective ribosomal products (DRiPs).",
-    "rag_verdict": "CONSISTENT",
-    "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT"
+    "rag_verdict": "INCONSISTENT",
+    "no_rag_verdict": "CONSISTENT",
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "30",
@@ -327,7 +414,10 @@
     "no_rag_answer": "Recurrence of transient global amnesia is relatively uncommon, occurring in roughly\u202f5\u201110\u202f% of patients (about 1 in 10). Most individuals experience a single episode and do not have further attacks.",
     "rag_verdict": "CONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "31",
@@ -338,7 +428,10 @@
     "no_rag_answer": "Paradoxical (abdominal) breathing usually becomes evident when the vital\u2011capacity has dropped to **\u224810\u201115\u202f% of the predicted value**, which in most adults corresponds to an absolute VC of **about 0.5\u20131.0\u202fL (\u22485\u201310\u202fmL\u202fkg\u207b\u00b9)**. Below this threshold the inspiratory muscles can no longer generate enough pressure and the chest wall moves inward while the abdomen expands. Prompt respiratory support is indicated at this level.",
     "rag_verdict": "CONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "32",
@@ -349,7 +442,10 @@
     "no_rag_answer": "The study \u201cMaternal and neonatal outcomes in obese women who lose weight during pregnancy\u201d was published in the journal **Obstetrics & Gynecology** in **2015**.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "33",
@@ -360,7 +456,10 @@
     "no_rag_answer": "Errors and omissions should be reported to the book\u2019s publisher or editorial office\u2014usually via the \u201cContact Us\u201d or \u201cReport Errors\u201d link on the publisher\u2019s website. If a specific author\u2019s email is provided in the front matter, you can also send the details directly to them. Include the page number, exact text, and a brief description of the correction.",
     "rag_verdict": "CONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "34",
@@ -371,7 +470,10 @@
     "no_rag_answer": "In the study, the uterine\u2011artery lumen enlarged noticeably between 22\u202fweeks and 29\u202fweeks of gestation, while the mean blood\u2011flow velocity rose modestly but significantly over the same interval.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "35",
@@ -382,7 +484,10 @@
     "no_rag_answer": "In the disease described, only a small minority of lymphocytes are affected \u2013 roughly\u202f10\u202f%\u201115\u202f% of peripheral\u2011blood lymphocytes show vacuoles.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "36",
@@ -393,7 +498,10 @@
     "no_rag_answer": "The passage says you should focus most on the **onset of the illness, the most severe or characteristic episodes, and any recent changes in the pattern or intensity of symptoms**. These events give the clearest clues about the disease\u2019s nature and progression.",
     "rag_verdict": "CONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "37",
@@ -402,9 +510,12 @@
     "question": "What is the full citation (journal, year, volume, and page numbers) for the Brunicardi\u202fFC et\u202fal. study on pancreatic polypeptide administration improving abnormal glucose metabolism in patients with chronic pancreatitis?",
     "rag_answer": "The study was published in the *Journal of Clinical Endocrinology & Metabolism* in 1996, volume\u202f81, issue\u202f10, pages\u202f3566\u20113572.",
     "no_rag_answer": "Brunicardi\u202fFC\u202fet\u202fal. \u201cPancreatic polypeptide administration improves abnormal glucose metabolism in patients with chronic pancreatitis.\u201d *Annals of Surgery* 1995; **221**(5):\u202f657\u2011662.",
-    "rag_verdict": "INCONSISTENT",
-    "no_rag_verdict": "CONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT"
+    "rag_verdict": "CONSISTENT",
+    "no_rag_verdict": "INCONSISTENT",
+    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "CONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "38",
@@ -415,7 +526,10 @@
     "no_rag_answer": "Daily antiseizure medication is generally advised when the estimated risk of a second (unprovoked) seizure exceeds roughly\u202f60\u202f% (often quoted as \u201cgreater than about a two\u2011thirds chance\u201d). In practice, clinicians start treatment when the recurrence risk is in the 50\u201160\u202f% range or higher. This threshold balances the benefits of preventing another seizure against the potential side\u2011effects of medication.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "39",
@@ -426,7 +540,10 @@
     "no_rag_answer": "Acute opioid withdrawal after stopping methadone usually begins within 24\u201148\u202fhours, peaks around days\u202f2\u20114, and most physical symptoms subside within 1\u20112\u202fweeks. However, some psychological symptoms (cravings, anxiety, insomnia) can linger for several weeks to a few months\u2014a phase called post\u2011acute withdrawal syndrome. If symptoms are severe or prolonged, seek medical advice for supportive care.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "40",
@@ -437,7 +554,10 @@
     "no_rag_answer": "The enzyme is **acetyl\u2011CoA carboxylase (ACC)**. Glucagon activates protein kinase A (and downstream AMPK), which phosphorylates ACC, rendering it inactive and thereby down\u2011regulating fatty\u2011acid synthesis.",
     "rag_verdict": "CONSISTENT",
     "no_rag_verdict": "CONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: CONSISTENT"
+    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "CONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "41",
@@ -448,7 +568,10 @@
     "no_rag_answer": "Regulatory T cells suppress other immune cells mainly by secreting the anti\u2011inflammatory cytokines **IL\u201110**, **TGF\u2011\u03b2**, and **IL\u201135** (a heterodimer of EBI3 and p35). These cytokines inhibit the activation and proliferation of effector T cells, dendritic cells, and other immune effectors.",
     "rag_verdict": "CONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "42",
@@ -459,7 +582,10 @@
     "no_rag_answer": "The randomized trial is reported in\u202fJoensuu\u202fH\u202fet\u202fal., \u201cOne versus three years of adjuvant imatinib for operable gastrointestinal stromal tumor: a randomized trial,\u201d *Lancet Oncology*\u202f2012.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "43",
@@ -470,7 +596,10 @@
     "no_rag_answer": "Approximately\u202f10\u202f% of women (roughly\u202f5\u201110\u202f%) will experience a recurrent ectopic pregnancy after having had one previously.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "44",
@@ -479,9 +608,12 @@
     "question": "What dosing recommendations are given for patients with no TPMT activity versus intermediate TPMT activity when starting azathioprine or 6\u2011MP?",
     "rag_answer": "Patients who lack TPMT activity should not be started on azathioprine or 6\u2011MP at all. Those with intermediate TPMT activity may be started, but at a reduced dose compared with the usual 1\u20131.5\u202fmg/kg/day of 6\u2011MP or 2\u20132.5\u202fmg/kg/day of azathioprine.",
     "no_rag_answer": "For patients who are **TPMT\u2011deficient (no activity)**, azathioprine or 6\u2011MP should generally be avoided or given at a dramatically reduced dose (\u226410\u202f% of the usual starting dose, often <0.1\u202fmg/kg/day) because severe myelosuppression is likely.  \nFor those with **intermediate TPMT activity (heterozygous)**, start at roughly 30\u201370\u202f% of the standard dose (e.g., azathioprine 0.5\u20131.5\u202fmg/kg/day or 6\u2011MP 0.3\u20130.5\u202fmg/kg/day) and titrate cautiously with close blood\u2011count monitoring.",
-    "rag_verdict": "INCONSISTENT",
-    "no_rag_verdict": "CONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT"
+    "rag_verdict": "CONSISTENT",
+    "no_rag_verdict": "INCONSISTENT",
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "CONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "45",
@@ -492,7 +624,10 @@
     "no_rag_answer": "Ubersax\u202fJ\u202fA, Yu\u202fJ, Koonin\u202fE\u202fV, et\u202fal. 2003. **Global analysis of Cdk1 substrate phosphorylation sites in budding yeast**. *Molecular Cell* **12**(5):\u202f657\u2011667.",
     "rag_verdict": "INCONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "46",
@@ -502,8 +637,11 @@
     "rag_answer": "A collagen (tropocollagen) molecule is roughly 300\u202fnm in length. This dimension is consistent across the descriptions of the molecule\u2019s size.",
     "no_rag_answer": "The passage states that a single tropocollagen (collagen) molecule is roughly **300\u202fnm long** (about 3\u202f\u00b5m in total length when assembled into a fibril). This corresponds to approximately **3,000\u202f\u00c5**.",
     "rag_verdict": "CONSISTENT",
-    "no_rag_verdict": "CONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: CONSISTENT"
+    "no_rag_verdict": "INCONSISTENT",
+    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "CONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "47",
@@ -512,9 +650,12 @@
     "question": "What prognostic indicators does the passage list for children younger than 3\u202fyears old who are at risk for developing asthma?",
     "rag_answer": "The passage cites eczema and a family history of asthma (parental asthma) as key prognostic indicators. It also notes that having two of the specified inhaled\u2011dose thresholds (90\u202f\u00b5g, 180\u202f\u00b5g, or 200\u202f\u00b5g per inhalation) is another risk factor for children under three. These factors together help identify youngsters at higher risk for developing asthma.",
     "no_rag_answer": "The passage notes that, in children under\u202f3, the strongest predictors of later asthma are a family history of asthma or allergic disease, early\u2011onset atopic dermatitis or eczema, and recurrent wheezing episodes\u2014especially those triggered by viral infections. Additional risk factors include elevated peripheral eosinophil counts and exposure to tobacco smoke or other indoor pollutants. Together, these clinical and environmental markers help identify toddlers most likely to develop persistent asthma.",
-    "rag_verdict": "INCONSISTENT",
-    "no_rag_verdict": "CONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT"
+    "rag_verdict": "CONSISTENT",
+    "no_rag_verdict": "INCONSISTENT",
+    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "CONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "48",
@@ -525,7 +666,10 @@
     "no_rag_answer": "The **Ziehl\u2011Neelsen (acid\u2011fast) stain** will highlight Mycobacterium avium as red\u2011colored bacilli, while Tropheryma whippelii does not retain the stain and remains negative. This difference helps distinguish M.\u202favium infection from Whipple disease.",
     "rag_verdict": "CONSISTENT",
     "no_rag_verdict": "CONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: CONSISTENT"
+    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "CONSISTENT",
+    "rag_shown_first": false
   },
   {
     "test_id": "49",
@@ -534,9 +678,12 @@
     "question": "Which immune cell types are reported to express only \u03b22\u2011adrenergic receptors?",
     "rag_answer": "B cells and Th1\u202fCD4\u207a T cells are reported to express only \u03b2\u2082\u2011adrenergic receptors. Other immune cells such as dendritic cells, monocytes and macrophages display both \u03b1\u2011 and \u03b2\u2011adrenergic receptors.",
     "no_rag_answer": "Studies of human peripheral blood immune cells have found that **T lymphocytes (both CD4\u207a and CD8\u207a), B lymphocytes, and natural\u2011killer (NK) cells express only the \u03b2\u2082\u2011adrenergic receptor**, without detectable \u03b2\u2081 or \u03b2\u2083 subtypes. Other leukocytes such as monocytes, macrophages, dendritic cells and neutrophils show a mixed \u03b2\u2011adrenergic profile (\u03b2\u2081\u202f+\u202f\u03b2\u2082).",
-    "rag_verdict": "INCONSISTENT",
-    "no_rag_verdict": "CONSISTENT",
-    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT"
+    "rag_verdict": "CONSISTENT",
+    "no_rag_verdict": "INCONSISTENT",
+    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT",
+    "rag_verdict_v1": "INCONSISTENT",
+    "no_rag_verdict_v1": "CONSISTENT",
+    "rag_shown_first": true
   },
   {
     "test_id": "50",
@@ -547,6 +694,9 @@
     "no_rag_answer": "According to the passage, the article titled \u201cCorrelation of computed tomography and positron emission tomography in patients with metastatic gastrointestinal stromal tumor treated at a single institution with imatinib mesylate: proposal of new computed tomography response criteria\u201d is listed as reference\u202f14.",
     "rag_verdict": "CONSISTENT",
     "no_rag_verdict": "INCONSISTENT",
-    "raw_judge_response": "ANSWER 1: CONSISTENT\nANSWER 2: INCONSISTENT"
+    "raw_judge_response": "ANSWER 1: INCONSISTENT\nANSWER 2: CONSISTENT",
+    "rag_verdict_v1": "CONSISTENT",
+    "no_rag_verdict_v1": "INCONSISTENT",
+    "rag_shown_first": false
   }
 ]

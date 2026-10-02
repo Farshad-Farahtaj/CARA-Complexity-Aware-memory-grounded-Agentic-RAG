@@ -1,7 +1,12 @@
 {
   "n": 50,
-  "rag_consistent": 21,
-  "rag_consistency_rate": 0.42,
-  "no_rag_consistent": 16,
-  "no_rag_consistency_rate": 0.32
+  "rag_consistent": 28,
+  "rag_consistency_rate": 0.56,
+  "no_rag_consistent": 7,
+  "no_rag_consistency_rate": 0.14,
+  "both_consistent": 6,
+  "only_rag_consistent": 22,
+  "only_no_rag_consistent": 1,
+  "neither_consistent": 21,
+  "rag_shown_first": 26
 }
