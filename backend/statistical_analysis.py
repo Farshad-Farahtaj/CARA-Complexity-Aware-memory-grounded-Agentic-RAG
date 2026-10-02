@@ -41,10 +41,6 @@ MODELS = [
 # bibliographic references (identified by reading the 50 passages).
 REFERENCE_LIST_IDS = {1, 2, 19, 21, 32, 37, 42, 45, 50}
 
-# The first 22 questions of the RAG ablation were answered in an earlier run
-# of the script, the other 28 in the final one.
-LAST_ID_OF_FIRST_RUN = 22
-
 
 # ----------------------------------------------------------------------
 # Statistical tools
@@ -191,9 +187,6 @@ def experiment_2():
     print(f"{'':<28} both consistent: {both}, neither: {neither}")
 
     print()
-    summarize_ablation("First run (ids 1-22)", [i for i in items if i["id"] <= LAST_ID_OF_FIRST_RUN])
-    summarize_ablation("Second run (ids 23-50)", [i for i in items if i["id"] > LAST_ID_OF_FIRST_RUN])
-    print()
     summarize_ablation("Without reference lists", [i for i in items if i["id"] not in REFERENCE_LIST_IDS])
 
     shown_first = sum(bool(i["rag_shown_first"]) for i in items)
@@ -202,13 +195,29 @@ def experiment_2():
     print(f"\nAnswer with retrieval shown first in {shown_first} of {len(items)} questions")
     print(f"Consistent verdicts: first position {first}, second position {second}")
 
-    print("\nMedian length of the answers (words):")
-    for label, group in [("all", items),
-                         ("first run", [i for i in items if i["id"] <= LAST_ID_OF_FIRST_RUN]),
-                         ("second run", [i for i in items if i["id"] > LAST_ID_OF_FIRST_RUN])]:
-        with_retrieval = np.median([len(i["rag_answer"].split()) for i in group])
-        without = np.median([len(i["no_rag_answer"].split()) for i in group])
-        print(f"  {label:<11} with retrieval {with_retrieval:.1f}, without {without:.1f}")
+    with_retrieval = np.median([len(i["rag_answer"].split()) for i in items])
+    without = np.median([len(i["no_rag_answer"].split()) for i in items])
+    print(f"\nMedian length of the answers (words): with retrieval {with_retrieval:.1f}, without {without:.1f}")
+
+    # Retrieval: was the source passage of the question given to the model?
+    if all("source_retrieved" in i for i in items):
+        n = len(items)
+        hits = [i for i in items if i["source_retrieved"]]
+        misses = [i for i in items if not i["source_retrieved"]]
+        low, high = wilson_interval(len(hits), n)
+        print(f"\nSource passage retrieved: {len(hits)}/{n} = {percent(len(hits) / n)}% "
+              f"(CI {percent(low)}-{percent(high)})")
+        for depth in (1, 2, 3, 5, 10):
+            found = sum(1 for i in items if i["source_rank"] is not None and i["source_rank"] <= depth)
+            print(f"  source passage within the first {depth:>2} of the ranking: {found}/{n}")
+        for label, group in [("retrieved", hits), ("not retrieved", misses)]:
+            if not group:
+                continue
+            rag = sum(i["rag_verdict"] == "CONSISTENT" for i in group)
+            no_rag = sum(i["no_rag_verdict"] == "CONSISTENT" for i in group)
+            low, high = wilson_interval(rag, len(group))
+            print(f"  source {label:<13} ({len(group):>2} questions): with retrieval {rag} consistent "
+                  f"({percent(rag / len(group))}%, CI {percent(low)}-{percent(high)}), without {no_rag}")
 
 
 # ----------------------------------------------------------------------
