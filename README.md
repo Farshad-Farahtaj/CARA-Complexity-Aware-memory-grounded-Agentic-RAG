@@ -24,15 +24,9 @@ cell to see the real case behind it.
 
 | Research question | What was measured | Result |
 |---|---|---|
-<<<<<<< Updated upstream
-| **RQ1**: model routing | Accuracy & latency of 4 candidate LLMs on 100 MedQA questions | GPT-OSS-120B **dominates on both axes**, no trade-off left to route on |
-| **RQ2**: does RAG help | 50 questions answered with retrieval on vs. off, checked against the real source | **42%** consistent with RAG vs **32%** without |
-| **RQ3**: escalation guard | 100 real patient/question pairs, precision & recall of the safety reviewer | **94%** accuracy, precision, recall, and F1 |
-=======
 | **RQ1**: model routing | Accuracy & latency of 4 candidate LLMs on 100 MedQA questions | GPT-OSS-120B has the **highest accuracy (87%) and is in the fastest group**, so there is no trade-off left to route on |
 | **RQ2**: does RAG help | 50 questions answered with retrieval on vs. off, checked against the real source | **56%** consistent with RAG vs **14%** without (p < 0.001) |
 | **RQ3**: escalation guard | 100 patient/question pairs, precision & recall of the safety reviewer | **94%** accuracy, precision, recall, and F1 |
->>>>>>> Stashed changes
 
 ## Table of contents
 
@@ -161,21 +155,6 @@ model tiers: a small, medium, and large model, picked per-question by a
 lightweight classifier. Before building that, I benchmarked four realistic
 open-weight candidates head-to-head on **100 MedQA questions**
 (`backend/evaluate.py` runs the benchmark, `backend/analyze_results.py` builds
-<<<<<<< Updated upstream
-the comparison, and the raw results are in `eval_results/`):
-
-![Model comparison: accuracy vs. latency](assets/model_comparison.svg)
-
-**Finding:** GPT-OSS-120B isn't a trade-off pick. It wins on accuracy *and*
-latency at the same time. A router only earns its complexity if there's a
-cost/accuracy trade-off to exploit between tiers, and here there isn't one, so
-I replaced the tiered-routing layer from my proposal with this single,
-empirically-justified model choice. That substitution, backed by the evidence
-above, is my direct answer to RQ1, not a shortcut around it.
-
-### RQ2: does retrieval (RAG) actually help
-
-=======
 the comparison, and the raw results are in `eval_results/` and
 `eval_results_extended/`):
 
@@ -206,40 +185,11 @@ correctly. `eval_results/gemma4.json` is the first pass and
 
 ### RQ2: does retrieval (RAG) actually help
 
->>>>>>> Stashed changes
 I generated 50 test questions automatically from real chunks in the RAG
 knowledge base, using a fixed random seed, one question per chunk, written by
 the LLM itself so that answering it correctly requires that exact passage (see
 `build_rag_ablation_testset.py`). I then answered each question twice, once
 with retrieval on and once with it forced off, and had an LLM judge check each
-<<<<<<< Updated upstream
-answer against the real source passage, blind to which condition produced it.
-
-![RAG on vs. off, question by question](assets/rag_ablation.svg)
-
-**Finding:** retrieval measurably helps: 42% consistent with the source vs.
-32% without, even on this deliberately hard, citation-level test set that's
-designed to stress-test grounding rather than reflect typical patient
-questions. What matters more than the average, though, is the per-question
-view above. Retrieval doesn't win uniformly: it flips some questions in CARA's
-favor and a few against it, which is itself useful evidence about where a
-large pretrained model's own knowledge competes with retrieval.
-
-### RQ3: how reliable is the escalation guard
-
-I built 100 test cases from real patient records across all three demo
-clinics (`build_escalation_testset.py`), using six explicit, rule-based
-categories that mirror the exact criteria in the guard's own prompt, so every
-label follows mechanically from real medication counts, conditions, and
-allergies instead of being hand-picked.
-
-![Escalation guard results: 100 real cases](assets/escalation_guard_results.svg)
-
-**Finding:** 94% accuracy, precision, recall, and F1. The 3 missed-risk cases
-(false negatives) are the ones worth studying further, and I've saved them in
-full, per-case detail in `escalation_eval_results/escalation_eval_raw.json`.
-
-=======
 answer against the real source passage, blind to which condition produced it
 and with the two answers shown in random order.
 
@@ -282,7 +232,6 @@ criteria do not cover because they only mention drug allergies. All six errors
 are saved in full, per-case detail in
 `escalation_eval_results/escalation_eval_raw.json`.
 
->>>>>>> Stashed changes
 *(RQ4, whether human-in-the-loop approval increases trust without adding
 friction, is a user-study question I haven't tried to answer quantitatively in
 this repo. The approval mechanism itself is built and working, and I describe
@@ -338,11 +287,7 @@ Thesis/
 ├── rag_ablation_results/           # RQ2: raw results, summary, and markdown table
 ├── assets/                         # chart images used in this README
 ├── archive/                        # old snapshots & one-time patch scripts, kept for history
-<<<<<<< Updated upstream
-├── docs/                           # medical reference material used by the RAG pipeline (gitignored)
-=======
 ├── docs/                           # the 18 medical textbooks of the MedQA corpus, used by the RAG pipeline (gitignored)
->>>>>>> Stashed changes
 ├── Patient Dataset/                 # raw Synthea parquet files (gitignored, see DATA.md)
 ├── DATA.md                          # Where the demo patient data comes from and how it was selected
 ├── requirements.txt
@@ -404,11 +349,7 @@ python backend/evaluate.py gptoss
 python backend/evaluate_extended.py gemma4 100
 ```
 
-<<<<<<< Updated upstream
-Both `evaluate_*` scripts make real Groq API calls, so they need internet and
-=======
 The `evaluate_*` scripts make real API calls, so they need internet and
->>>>>>> Stashed changes
 take a few minutes. They're safe to interrupt and resume: progress is saved
 after every single test case.
 
@@ -423,8 +364,4 @@ after every single test case.
 
 ## License
 
-<<<<<<< Updated upstream
 MIT. See [LICENSE](LICENSE) for details.
-=======
-MIT. See [LICENSE](LICENSE) for details.
->>>>>>> Stashed changes
