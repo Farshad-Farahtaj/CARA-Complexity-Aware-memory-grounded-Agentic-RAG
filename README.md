@@ -24,9 +24,15 @@ cell to see the real case behind it.
 
 | Research question | What was measured | Result |
 |---|---|---|
+<<<<<<< Updated upstream
 | **RQ1**: model routing | Accuracy & latency of 4 candidate LLMs on 100 MedQA questions | GPT-OSS-120B **dominates on both axes**, no trade-off left to route on |
 | **RQ2**: does RAG help | 50 questions answered with retrieval on vs. off, checked against the real source | **42%** consistent with RAG vs **32%** without |
 | **RQ3**: escalation guard | 100 real patient/question pairs, precision & recall of the safety reviewer | **94%** accuracy, precision, recall, and F1 |
+=======
+| **RQ1**: model routing | Accuracy & latency of 4 candidate LLMs on 100 MedQA questions | GPT-OSS-120B has the **highest accuracy (87%) and is in the fastest group**, so there is no trade-off left to route on |
+| **RQ2**: does RAG help | 50 questions answered with retrieval on vs. off, checked against the real source | **56%** consistent with RAG vs **14%** without (p < 0.001) |
+| **RQ3**: escalation guard | 100 patient/question pairs, precision & recall of the safety reviewer | **94%** accuracy, precision, recall, and F1 |
+>>>>>>> Stashed changes
 
 ## Table of contents
 
@@ -155,6 +161,7 @@ model tiers: a small, medium, and large model, picked per-question by a
 lightweight classifier. Before building that, I benchmarked four realistic
 open-weight candidates head-to-head on **100 MedQA questions**
 (`backend/evaluate.py` runs the benchmark, `backend/analyze_results.py` builds
+<<<<<<< Updated upstream
 the comparison, and the raw results are in `eval_results/`):
 
 ![Model comparison: accuracy vs. latency](assets/model_comparison.svg)
@@ -168,11 +175,44 @@ above, is my direct answer to RQ1, not a shortcut around it.
 
 ### RQ2: does retrieval (RAG) actually help
 
+=======
+the comparison, and the raw results are in `eval_results/` and
+`eval_results_extended/`):
+
+![Model comparison: accuracy vs. latency](assets/model_comparison.svg)
+
+| Model | Accuracy (95% CI) | Median time |
+|---|---|---|
+| GPT-OSS-120B | 87% (79.0 to 92.2) | 15.0 s |
+| Gemma 4 31B | 83% (74.5 to 89.1) | 85.9 s |
+| Qwen3.8 27B | 82% (73.3 to 88.3) | 15.5 s |
+| MedGemma 4B | 62% (52.2 to 70.9) | 141.5 s |
+
+**Finding:** the three general-purpose models are statistically equivalent in
+accuracy on this sample (McNemar's exact test, all pairwise p > 0.3), and
+MedGemma 4B is significantly lower than each of them. What separates the
+models is speed: GPT-OSS-120B and Qwen3.8 27B answer in about 15 seconds,
+Gemma 4 31B in about 86. A router only earns its complexity if a slower model
+buys better accuracy, and here none does, so I replaced the tiered-routing
+layer from my proposal with a single model. I chose GPT-OSS-120B because it has
+the highest observed accuracy, is in the fastest group, and answered every
+question in a single pass.
+
+A note on Gemma 4 31B: in the first pass, 14 of its 100 questions got no
+response after three attempts (server errors). I ran those 14 again
+(`backend/evaluate_extended.py gemma4 100`) and all were answered, 11 of them
+correctly. `eval_results/gemma4.json` is the first pass and
+`eval_results_extended/gemma4.json` is the complete result used above.
+
+### RQ2: does retrieval (RAG) actually help
+
+>>>>>>> Stashed changes
 I generated 50 test questions automatically from real chunks in the RAG
 knowledge base, using a fixed random seed, one question per chunk, written by
 the LLM itself so that answering it correctly requires that exact passage (see
 `build_rag_ablation_testset.py`). I then answered each question twice, once
 with retrieval on and once with it forced off, and had an LLM judge check each
+<<<<<<< Updated upstream
 answer against the real source passage, blind to which condition produced it.
 
 ![RAG on vs. off, question by question](assets/rag_ablation.svg)
@@ -199,6 +239,50 @@ allergies instead of being hand-picked.
 (false negatives) are the ones worth studying further, and I've saved them in
 full, per-case detail in `escalation_eval_results/escalation_eval_raw.json`.
 
+=======
+answer against the real source passage, blind to which condition produced it
+and with the two answers shown in random order.
+
+![RAG on vs. off, question by question](assets/rag_ablation.svg)
+
+**Finding:** retrieval makes the answers far more faithful to the knowledge
+base: 56% consistent with the source (28 of 50) against 14% without (7 of 50).
+Retrieval changed the outcome in 23 questions, 22 times in its favour
+(McNemar's exact test, p < 0.001). In 10 of the 22 questions where the answer
+with retrieval was not consistent, the model said that the passages it received
+did not contain the answer, instead of inventing one. That points at the
+retriever (only the top 2 of 47,681 chunks are used here) as the part to
+improve next.
+
+These questions are tied to specific passages by design, so this measures
+faithfulness to the knowledge base, not the gain on typical patient questions.
+
+*Correction (October 2026): the first version of `evaluate_rag_ablation.py`
+assigned the judge's two verdicts to the wrong condition whenever the no-RAG
+answer was shown first, and reported 42% vs 32%. The script now stores which
+answer was shown first, and the 50 saved answer pairs were re-judged with the
+fixed version. The old verdicts are kept in the raw file as `*_v1` fields.*
+
+### RQ3: how reliable is the escalation guard
+
+I built 100 test cases from real patient records across all three demo
+clinics (`build_escalation_testset.py`), using six explicit, rule-based
+categories that mirror the exact criteria in the guard's own prompt, so every
+label follows mechanically from real medication counts, conditions, and
+allergies instead of being hand-picked.
+
+![Escalation guard results: 100 real cases](assets/escalation_guard_results.svg)
+
+**Finding:** 94% accuracy, precision, recall, and F1 (95% confidence interval
+for accuracy: 87.5 to 97.2). The guard made no errors on the two most explicit
+risk patterns, an extra drug for a patient on several medications and
+emergency symptoms. The 3 missed-risk cases (false negatives) are the ones
+worth studying further: two involve a latex allergy, which the guard's
+criteria do not cover because they only mention drug allergies. All six errors
+are saved in full, per-case detail in
+`escalation_eval_results/escalation_eval_raw.json`.
+
+>>>>>>> Stashed changes
 *(RQ4, whether human-in-the-loop approval increases trust without adding
 friction, is a user-study question I haven't tried to answer quantitatively in
 this repo. The approval mechanism itself is built and working, and I describe
@@ -238,20 +322,27 @@ Thesis/
 │   ├── database.py                 # All SQLite access: schema, auth, patients, escalations
 │   ├── telegram_bot.py             # Background process: delivers/resolves escalations via Telegram
 │   ├── evaluate.py                 # RQ1: MedQA benchmark runner across candidate LLMs
+│   ├── evaluate_extended.py        # RQ1: re-runs failed questions / extends the sample, keeping earlier answers
 │   ├── analyze_results.py          # RQ1: builds the comparison table/chart from evaluate.py's output
 │   └── scripts/
 │       ├── ingest.py                       # Builds the ChromaDB knowledge base (run from project root)
 │       ├── build_escalation_testset.py     # RQ3: builds the 100-case labeled test set
 │       ├── evaluate_escalation_guard.py    # RQ3: runs the guard, reports precision/recall/F1
 │       ├── build_rag_ablation_testset.py   # RQ2: builds the 50-question RAG on/off test set
+│       ├── extend_rag_ablation_testset.py  # RQ2: adds more questions without changing the existing ones
 │       ├── evaluate_rag_ablation.py        # RQ2: runs both conditions, judges against the source
 │       └── ...                             # one-time demo-data import & diagnostic scripts
-├── eval_results/                   # RQ1: raw + summarized model benchmark results
+├── eval_results/                   # RQ1: raw + summarized model benchmark results (first pass)
+├── eval_results_extended/          # RQ1: results after re-running the questions that got no response
 ├── escalation_eval_results/        # RQ3: raw results, summary, and markdown table
 ├── rag_ablation_results/           # RQ2: raw results, summary, and markdown table
 ├── assets/                         # chart images used in this README
 ├── archive/                        # old snapshots & one-time patch scripts, kept for history
+<<<<<<< Updated upstream
 ├── docs/                           # medical reference material used by the RAG pipeline (gitignored)
+=======
+├── docs/                           # the 18 medical textbooks of the MedQA corpus, used by the RAG pipeline (gitignored)
+>>>>>>> Stashed changes
 ├── Patient Dataset/                 # raw Synthea parquet files (gitignored, see DATA.md)
 ├── DATA.md                          # Where the demo patient data comes from and how it was selected
 ├── requirements.txt
@@ -307,9 +398,17 @@ python backend/scripts/evaluate_escalation_guard.py
 # RQ2: RAG ablation
 python backend/scripts/build_rag_ablation_testset.py
 python backend/scripts/evaluate_rag_ablation.py
+
+# RQ1: model benchmark (one model at a time), then re-run any question that got no response
+python backend/evaluate.py gptoss
+python backend/evaluate_extended.py gemma4 100
 ```
 
+<<<<<<< Updated upstream
 Both `evaluate_*` scripts make real Groq API calls, so they need internet and
+=======
+The `evaluate_*` scripts make real API calls, so they need internet and
+>>>>>>> Stashed changes
 take a few minutes. They're safe to interrupt and resume: progress is saved
 after every single test case.
 
@@ -324,4 +423,8 @@ after every single test case.
 
 ## License
 
+<<<<<<< Updated upstream
 MIT. See [LICENSE](LICENSE) for details.
+=======
+MIT. See [LICENSE](LICENSE) for details.
+>>>>>>> Stashed changes
