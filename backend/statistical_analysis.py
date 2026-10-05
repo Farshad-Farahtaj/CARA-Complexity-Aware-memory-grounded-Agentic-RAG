@@ -65,7 +65,16 @@ def paired_difference_interval(b, c, n, z=Z):
     """Difference between two paired proportions with its 95% interval."""
     difference = (b - c) / n
     standard_error = math.sqrt((b + c) - (b - c) ** 2 / n) / n
-    return difference, difference - z * standard_error, difference + z * standard_error
+    low = max(-1.0, difference - z * standard_error)
+    high = min(1.0, difference + z * standard_error)
+    return difference, low, high
+
+
+def format_p(p, digits=3):
+    """'=0.503' with a fixed number of decimals, or '<0.001' when the value rounds to zero."""
+    if round(p, digits) == 0:
+        return f"<{10 ** -digits:.{digits}f}"
+    return f"={p:.{digits}f}"
 
 
 def holm_correction(p_values):
@@ -143,7 +152,7 @@ def experiment_1():
         difference, low, high = paired_difference_interval(b, c, n)
         print(f"  {name_a:<13} vs {name_b:<13} b={b:>2} c={c:>2}  "
               f"difference {100 * difference:+.0f} ({100 * low:.1f} to {100 * high:.1f})  "
-              f"p={p:.3f}  Holm={p_holm:.3f}")
+              f"p{format_p(p)}  Holm{format_p(p_holm)}")
 
     per_question = Counter(matrix.sum(axis=1).tolist())
     print("\nNumber of questions answered correctly by 4, 3, 2, 1, 0 models:",
@@ -170,7 +179,7 @@ def summarize_ablation(label, items):
     print(f"{label:<28} n={n:>2}  with retrieval {rag}/{n} = {percent(rag / n)}% "
           f"(CI {percent(rag_low)}-{percent(rag_high)})  without {no_rag}/{n} = {percent(no_rag / n)}% "
           f"(CI {percent(no_low)}-{percent(no_high)})")
-    print(f"{'':<28} b={b} c={c}  McNemar p={mcnemar_exact(b, c):.4f}  "
+    print(f"{'':<28} b={b} c={c}  McNemar p{format_p(mcnemar_exact(b, c), 4)}  "
           f"difference {100 * difference:.1f} ({100 * low:.1f} to {100 * high:.1f})")
 
 
@@ -188,6 +197,8 @@ def experiment_2():
 
     print()
     summarize_ablation("Without reference lists", [i for i in items if i["id"] not in REFERENCE_LIST_IDS])
+    print()
+    summarize_ablation('Without "the passage"', [i for i in items if "passage" not in i["question"].lower()])
 
     shown_first = sum(bool(i["rag_shown_first"]) for i in items)
     first = sum((i["rag_verdict"] if i["rag_shown_first"] else i["no_rag_verdict"]) == "CONSISTENT" for i in items)
@@ -210,14 +221,11 @@ def experiment_2():
         for depth in (1, 2, 3, 5, 10):
             found = sum(1 for i in items if i["source_rank"] is not None and i["source_rank"] <= depth)
             print(f"  source passage within the first {depth:>2} of the ranking: {found}/{n}")
-        for label, group in [("retrieved", hits), ("not retrieved", misses)]:
-            if not group:
-                continue
-            rag = sum(i["rag_verdict"] == "CONSISTENT" for i in group)
-            no_rag = sum(i["no_rag_verdict"] == "CONSISTENT" for i in group)
-            low, high = wilson_interval(rag, len(group))
-            print(f"  source {label:<13} ({len(group):>2} questions): with retrieval {rag} consistent "
-                  f"({percent(rag / len(group))}%, CI {percent(low)}-{percent(high)}), without {no_rag}")
+        print()
+        if hits:
+            summarize_ablation("Source retrieved", hits)
+        if misses:
+            summarize_ablation("Source not retrieved", misses)
 
 
 # ----------------------------------------------------------------------

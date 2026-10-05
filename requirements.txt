@@ -28,6 +28,8 @@ python-dotenv
 
 # ── Analysis / reporting ──────────────────────────────────────
 matplotlib
+numpy
+scipy
 
 # ── CARA platform (Streamlit app) ─────────────────────────────
 streamlit
@@ -38,3 +40,5 @@ streamlit-cookies-controller
 pypdf
 google-genai
 requests
+pandas
+openpyxl

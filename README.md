@@ -25,7 +25,7 @@ cell to see the real case behind it.
 | Research question | What was measured | Result |
 |---|---|---|
 | **RQ1**: model routing | Accuracy & latency of 4 candidate LLMs on 100 MedQA questions | GPT-OSS-120B has the **highest accuracy (87%) and is in the fastest group**, so there is no trade-off left to route on |
-| **RQ2**: does RAG help | 50 questions answered with retrieval on vs. off, checked against the real source | **56%** consistent with RAG vs **14%** without (p < 0.001) |
+| **RQ2**: does RAG help | 50 questions answered with retrieval on vs. off, checked against the real source | **56%** consistent with RAG vs **20%** without (p < 0.001); when the retriever finds the source passage, **19 of 19** answers are consistent |
 | **RQ3**: escalation guard | 100 patient/question pairs, precision & recall of the safety reviewer | **94%** accuracy, precision, recall, and F1 |
 
 ## Table of contents
@@ -80,10 +80,10 @@ When a question is escalated:
    sends each one to the doctor's Telegram as a message, with the patient's
    relevant history, medications, and allergies attached.
 3. The doctor **replies directly to that Telegram message**. The bot picks up
-   the reply, rewrites it in patient-friendly language, and writes it back to
-   the database.
-4. The patient sees the doctor's reply appear automatically the next time they
-   open that conversation, no polling or extra click needed.
+   the reply and writes it back to the database.
+4. The patient sees the doctor's reply, rewritten in patient-friendly language,
+   appear automatically the next time they open that conversation, no polling
+   or extra click needed.
 
 Doctors can also resolve a pending question straight from the clinic dashboard's
 **Escalations** tab if they'd rather not use Telegram.
@@ -167,7 +167,7 @@ the comparison, and the raw results are in `eval_results/` and
 | Qwen3.8 27B | 82% (73.3 to 88.3) | 15.5 s |
 | MedGemma 4B | 62% (52.2 to 70.9) | 141.5 s |
 
-**Finding:** the three general-purpose models are statistically equivalent in
+**Finding:** the three general-purpose models do not differ significantly in
 accuracy on this sample (McNemar's exact test, all pairwise p > 0.3), and
 MedGemma 4B is significantly lower than each of them. What separates the
 models is speed: GPT-OSS-120B and Qwen3.8 27B answer in about 15 seconds,
@@ -196,22 +196,38 @@ and with the two answers shown in random order.
 ![RAG on vs. off, question by question](assets/rag_ablation.svg)
 
 **Finding:** retrieval makes the answers far more faithful to the knowledge
-base: 56% consistent with the source (28 of 50) against 14% without (7 of 50).
-Retrieval changed the outcome in 23 questions, 22 times in its favour
-(McNemar's exact test, p < 0.001). In 10 of the 22 questions where the answer
-with retrieval was not consistent, the model said that the passages it received
-did not contain the answer, instead of inventing one. That points at the
-retriever (only the top 2 of 47,681 chunks are used here) as the part to
-improve next.
+base: 56% consistent with the source (28 of 50) against 20% without (10 of 50).
+Retrieval changed the outcome in 26 questions, 22 times in its favour
+(McNemar's exact test, p < 0.001).
+
+The script also records which passages the retriever returned for every
+question, and that explains where the 56% comes from:
+
+| Source passage | Questions | Consistent with RAG | Consistent without |
+|---|---|---|---|
+| Retrieved (among the 2 passages given to the model) | 19 | 19 (100%) | 3 (16%) |
+| Not retrieved | 31 | 9 (29%) | 7 (23%) |
+
+When the retriever finds the source passage, every answer is consistent with
+it. When it does not, the two conditions are close (9 against 7), a difference
+this sample cannot tell apart from zero. So the evidence points to the
+retriever, not the generator, as the part to improve next. Retrieving more passages is
+not enough on its own: the source passage is within the top 3 for 21 questions,
+the top 5 for 23, and the top 10 for 30.
+
+In 9 of the 22 questions where the answer with retrieval was not consistent,
+the model said that the passages it received did not contain the answer,
+instead of inventing one (counted by reading the 22 answers in
+`rag_ablation_results/rag_ablation_raw.json`).
 
 These questions are tied to specific passages by design, so this measures
 faithfulness to the knowledge base, not the gain on typical patient questions.
 
-*Correction (October 2026): the first version of `evaluate_rag_ablation.py`
-assigned the judge's two verdicts to the wrong condition whenever the no-RAG
-answer was shown first, and reported 42% vs 32%. The script now stores which
-answer was shown first, and the 50 saved answer pairs were re-judged with the
-fixed version. The old verdicts are kept in the raw file as `*_v1` fields.*
+*Note (October 2026): these are the results of the current version of
+`evaluate_rag_ablation.py`, which answers all 50 questions with one
+configuration and records which passages were retrieved. An earlier version assigned the
+judge's two verdicts to the wrong condition whenever the no-RAG answer was
+shown first and reported 42% vs 32%; it is in the git history.*
 
 ### RQ3: how reliable is the escalation guard
 
@@ -273,6 +289,7 @@ Thesis/
 │   ├── evaluate.py                 # RQ1: MedQA benchmark runner across candidate LLMs
 │   ├── evaluate_extended.py        # RQ1: re-runs failed questions / extends the sample, keeping earlier answers
 │   ├── analyze_results.py          # RQ1: builds the comparison table/chart from evaluate.py's output
+│   ├── statistical_analysis.py     # All RQs: confidence intervals and tests computed from the saved results
 │   └── scripts/
 │       ├── ingest.py                       # Builds the ChromaDB knowledge base (run from project root)
 │       ├── build_escalation_testset.py     # RQ3: builds the 100-case labeled test set
@@ -347,6 +364,9 @@ python backend/scripts/evaluate_rag_ablation.py
 # RQ1: model benchmark (one model at a time), then re-run any question that got no response
 python backend/evaluate.py gptoss
 python backend/evaluate_extended.py gemma4 100
+
+# Statistics for all three experiments (no API calls, reads the saved results)
+python backend/statistical_analysis.py
 ```
 
 The `evaluate_*` scripts make real API calls, so they need internet and

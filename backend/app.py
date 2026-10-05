@@ -149,6 +149,12 @@ SUGGESTED_QUESTIONS = [
     "What does a low-grade fever mean?",
 ]
 
+PENDING_REVIEW_MESSAGE = (
+    "⏳ This question needs your doctor's review before I can answer it safely. "
+    "I'll let you know here once they respond — you can also come back and check anytime."
+)
+DOCTOR_REPLY_PREFIX = "✅ **Reviewed by"
+
 EMERGENCY_BANNER = (
     '<div class="emergency-banner">🚨 <strong>Medical emergency?</strong> '
     'If you are experiencing a life-threatening emergency (e.g. chest pain, difficulty '
@@ -860,13 +866,29 @@ else:
         picked_suggestion = None
         for msg in history:
             render_bubble(msg["role"], msg["content"], msg.get("sent_at"))
-        if history[-1]["role"] == "assistant":
+        # The answer can be regenerated only when the last message is a normal answer
+        # of the model: not the "waiting for your doctor" notice and not a doctor's reply.
+        last_message = history[-1]
+        can_regenerate = (
+            last_message["role"] == "assistant"
+            and not last_message["content"].startswith(PENDING_REVIEW_MESSAGE[:1])
+            and not last_message["content"].startswith(DOCTOR_REPLY_PREFIX)
+        )
+        if can_regenerate:
             if st.button("↻ Regenerate response"):
                 last_question = next(m["content"] for m in reversed(history) if m["role"] == "user")
-                delete_last_assistant_message(st.session_state.active_conv)
                 with st.spinner("CARA is thinking..."):
                     answer = ask_cara(query_engine, patient, last_question)
-                save_message(st.session_state.active_conv, "assistant", answer)
+                    # A regenerated answer goes through the same safety check as a new one.
+                    escalate, reason = needs_doctor_review(patient, last_question, answer)
+                # The old answer is removed only now, so an API error above cannot lose it.
+                delete_last_assistant_message(st.session_state.active_conv)
+                if escalate:
+                    create_escalation(st.session_state.active_conv, patient["patient_id"],
+                                      last_question, answer, reason)
+                    save_message(st.session_state.active_conv, "assistant", PENDING_REVIEW_MESSAGE)
+                else:
+                    save_message(st.session_state.active_conv, "assistant", answer)
                 st.rerun()
 
         pending_escalation = get_escalation_for_conversation(st.session_state.active_conv)
@@ -877,7 +899,7 @@ else:
                 clinic = get_clinic_by_id(patient["clinic_id"])
                 doctor_name = clinic["contact_name"] if clinic else "your doctor"
                 friendly_reply = rephrase_for_patient(pending_escalation["doctor_reply"])
-            final_msg = f"✅ **Reviewed by {doctor_name}:**\n\n{friendly_reply}"
+            final_msg = f"{DOCTOR_REPLY_PREFIX} {doctor_name}:**\n\n{friendly_reply}"
             save_message(st.session_state.active_conv, "assistant", final_msg)
             mark_escalation_shown(pending_escalation["escalation_id"])
             st.rerun()
@@ -922,11 +944,7 @@ else:
 
         if escalate:
             create_escalation(st.session_state.active_conv, patient["patient_id"], question, answer, reason)
-            pending_msg = (
-                "⏳ This question needs your doctor's review before I can answer it safely. "
-                "I'll let you know here once they respond — you can also come back and check anytime."
-            )
-            save_message(st.session_state.active_conv, "assistant", pending_msg)
+            save_message(st.session_state.active_conv, "assistant", PENDING_REVIEW_MESSAGE)
             st.rerun()
         else:
             render_bubble("assistant", answer)
