@@ -144,12 +144,31 @@ def resolve_escalation_by_telegram_id(telegram_message_id, doctor_reply):
 
 
 def get_escalation_for_conversation(conversation_id):
+    """Returns the escalation of this conversation that needs attention first:
+    a doctor's reply the patient has not seen yet (oldest first), then a question
+    still waiting for the doctor, then any other one. A conversation can hold more
+    than one escalation, so looking only at the newest one could leave the reply
+    to an earlier question undelivered."""
     with get_conn() as conn:
         row = conn.execute(
-            "SELECT * FROM escalations WHERE conversation_id = ? ORDER BY escalation_id DESC LIMIT 1",
+            "SELECT * FROM escalations WHERE conversation_id = ? "
+            "ORDER BY CASE "
+            "WHEN status = 'resolved' AND shown_to_patient = 0 THEN 0 "
+            "WHEN status = 'pending' THEN 1 "
+            "ELSE 2 END, escalation_id ASC LIMIT 1",
             (conversation_id,),
         ).fetchone()
         return dict(row) if row else None
+
+
+def has_pending_escalation(conversation_id):
+    """True if at least one question of this conversation is still waiting for the doctor."""
+    with get_conn() as conn:
+        row = conn.execute(
+            "SELECT 1 FROM escalations WHERE conversation_id = ? AND status = 'pending' LIMIT 1",
+            (conversation_id,),
+        ).fetchone()
+        return row is not None
 
 
 def mark_escalation_shown(escalation_id):

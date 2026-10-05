@@ -25,7 +25,7 @@ from database import (
     get_empty_conversation, delete_conversation,
     delete_patient_account, save_message, get_chat_history, delete_last_assistant_message,
     reset_patient_password, reset_clinic_password, get_patient_by_id, get_clinic_by_id,
-    create_escalation, get_escalation_for_conversation, mark_escalation_shown,
+    create_escalation, get_escalation_for_conversation, has_pending_escalation, mark_escalation_shown,
     get_escalations_for_clinic, resolve_escalation_manually,
 )
 
@@ -778,8 +778,7 @@ with st.sidebar:
             st.caption(f"Delete “{conv['title']}”? This cannot be undone.")
             c_yes, c_no = st.columns(2)
             if c_yes.button("✓ Delete", key=f"del_yes_{cid}", use_container_width=True):
-                blocking_escalation = get_escalation_for_conversation(cid)
-                if blocking_escalation and blocking_escalation["status"] == "pending":
+                if has_pending_escalation(cid):
                     st.session_state.confirm_delete_conv = None
                     st.warning("This chat has a question still waiting for your doctor's "
                                "review, so it can't be deleted yet.")
@@ -899,6 +898,13 @@ else:
                 clinic = get_clinic_by_id(patient["clinic_id"])
                 doctor_name = clinic["contact_name"] if clinic else "your doctor"
                 friendly_reply = rephrase_for_patient(pending_escalation["doctor_reply"])
+            # If the reply is for an earlier question of this chat, say which one.
+            last_question = next((m["content"] for m in reversed(history) if m["role"] == "user"), "")
+            if pending_escalation["question"] != last_question:
+                asked = " ".join(pending_escalation["question"].split())
+                if len(asked) > 150:
+                    asked = asked[:150] + "..."
+                friendly_reply = f"About your earlier question: “{html.escape(asked)}”\n\n{friendly_reply}"
             final_msg = f"{DOCTOR_REPLY_PREFIX} {doctor_name}:**\n\n{friendly_reply}"
             save_message(st.session_state.active_conv, "assistant", final_msg)
             mark_escalation_shown(pending_escalation["escalation_id"])
