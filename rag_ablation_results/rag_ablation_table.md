@@ -1,8 +1,8 @@
 | Metric | RAG ON | RAG OFF |
 |---|---|---|
-| Test questions (n) | 50 | 50 |
-| Answers consistent with source | 28 | 10 |
-| Consistency rate | 56.0% | 20.0% |
-| Consistent in this condition only | 22 | 4 |
-| Consistent when the source passage was retrieved (19 questions) | 19 | 3 |
-| Consistent when it was not retrieved (31 questions) | 9 | 7 |
+| Test questions (n) | 200 | 200 |
+| Answers consistent with source | 106 | 69 |
+| Consistency rate | 53.0% | 34.5% |
+| Consistent in this condition only | 64 | 27 |
+| Consistent when the source passage was retrieved (78 questions) | 75 | 26 |
+| Consistent when it was not retrieved (122 questions) | 31 | 43 |
