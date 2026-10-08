@@ -25,7 +25,7 @@ cell to see the real case behind it.
 | Research question | What was measured | Result |
 |---|---|---|
 | **RQ1**: model routing | Accuracy & latency of 4 candidate LLMs on 100 MedQA questions | GPT-OSS-120B has the **highest accuracy (87%) and is in the fastest group**, so there is no trade-off left to route on |
-| **RQ2**: does RAG help | 50 questions answered with retrieval on vs. off, checked against the real source | **56%** consistent with RAG vs **20%** without (p < 0.001); when the retriever finds the source passage, **19 of 19** answers are consistent |
+| **RQ2**: does RAG help | 200 questions answered with retrieval on vs. off, checked against the real source | **53%** consistent with RAG vs **34.5%** without (p < 0.001); when the retriever finds the source passage, **75 of 78** answers are consistent |
 | **RQ3**: escalation guard | 100 patient/question pairs, precision & recall of the safety reviewer | **94%** accuracy, precision, recall, and F1 |
 
 ## Table of contents
@@ -185,49 +185,52 @@ correctly. `eval_results/gemma4.json` is the first pass and
 
 ### RQ2: does retrieval (RAG) actually help
 
-I generated 50 test questions automatically from real chunks in the RAG
+I generated 200 test questions automatically from real chunks in the RAG
 knowledge base, using a fixed random seed, one question per chunk, written by
 the LLM itself so that answering it correctly requires that exact passage (see
-`build_rag_ablation_testset.py`). I then answered each question twice, once
+`build_rag_ablation_testset.py` and `extend_rag_ablation_testset.py`). I then answered each question twice, once
 with retrieval on and once with it forced off, and had an LLM judge check each
 answer against the real source passage, blind to which condition produced it
 and with the two answers shown in random order.
 
 ![RAG on vs. off, question by question](assets/rag_ablation.svg)
 
-**Finding:** retrieval makes the answers far more faithful to the knowledge
-base: 56% consistent with the source (28 of 50) against 20% without (10 of 50).
-Retrieval changed the outcome in 26 questions, 22 times in its favour
-(McNemar's exact test, p < 0.001).
+**Finding:** retrieval makes the answers more faithful to the knowledge
+base: 53% consistent with the source (106 of 200) against 34.5% without (69 of
+200). Retrieval changed the outcome in 91 questions, 64 times in its favor
+(McNemar's exact test, p < 0.001; difference 18.5 points, 95% CI 9.5 to 27.5).
 
 The script also records which passages the retriever returned for every
-question, and that explains where the 56% comes from:
+question, and that explains where the 53% comes from:
 
 | Source passage | Questions | Consistent with RAG | Consistent without |
 |---|---|---|---|
-| Retrieved (among the 2 passages given to the model) | 19 | 19 (100%) | 3 (16%) |
-| Not retrieved | 31 | 9 (29%) | 7 (23%) |
+| Retrieved (among the 2 passages given to the model) | 78 | 75 (96%) | 26 (33%) |
+| Not retrieved | 122 | 31 (25%) | 43 (35%) |
 
-When the retriever finds the source passage, every answer is consistent with
-it. When it does not, the two conditions are close (9 against 7), a difference
-this sample cannot tell apart from zero. So the evidence points to the
-retriever, not the generator, as the part to improve next. Retrieving more passages is
-not enough on its own: the source passage is within the top 3 for 21 questions,
-the top 5 for 23, and the top 10 for 30.
+When the retriever finds the source passage, almost every answer is
+consistent with it. When it does not, retrieval does not help: the answers
+with retrieval are less often consistent (31 against 43, p = 0.09,
+not significant). So the evidence points to the retriever, not the generator,
+as the part to improve next. Retrieving more passages is not enough on its
+own: the source passage is within the top 3 for 92 questions, the top 5 for
+106, and the top 10 for 129.
 
-In 9 of the 22 questions where the answer with retrieval was not consistent,
-the model said that the passages it received did not contain the answer,
-instead of inventing one (counted by reading the 22 answers in
-`rag_ablation_results/rag_ablation_raw.json`).
+In 44 of the 91 misses where the answer with retrieval was not consistent, the
+model said that the passages it received did not contain the answer, instead
+of inventing one. This probably follows the default retrieval template, which
+tells the model to answer from the context and not from prior knowledge, and
+these declines account for 14 of the 27 cases where only the answer without
+retrieval was consistent.
 
 These questions are tied to specific passages by design, so this measures
 faithfulness to the knowledge base, not the gain on typical patient questions.
 
 *Note (October 2026): these are the results of the current version of
-`evaluate_rag_ablation.py`, which answers all 50 questions with one
+`evaluate_rag_ablation.py`, which answers all 200 questions with one
 configuration and records which passages were retrieved. An earlier version assigned the
 judge's two verdicts to the wrong condition whenever the no-RAG answer was
-shown first and reported 42% vs 32%; it is in the git history.*
+shown first and reported 42% vs 32% on the first 50 questions; it is in the git history.*
 
 ### RQ3: how reliable is the escalation guard
 
@@ -294,7 +297,7 @@ Thesis/
 │       ├── ingest.py                       # Builds the ChromaDB knowledge base (run from project root)
 │       ├── build_escalation_testset.py     # RQ3: builds the 100-case labeled test set
 │       ├── evaluate_escalation_guard.py    # RQ3: runs the guard, reports precision/recall/F1
-│       ├── build_rag_ablation_testset.py   # RQ2: builds the 50-question RAG on/off test set
+│       ├── build_rag_ablation_testset.py   # RQ2: builds the first 50 questions of the RAG on/off test set
 │       ├── extend_rag_ablation_testset.py  # RQ2: adds more questions without changing the existing ones
 │       ├── evaluate_rag_ablation.py        # RQ2: runs both conditions, judges against the source
 │       └── ...                             # one-time demo-data import & diagnostic scripts
@@ -359,6 +362,7 @@ python backend/scripts/evaluate_escalation_guard.py
 
 # RQ2: RAG ablation
 python backend/scripts/build_rag_ablation_testset.py
+python backend/scripts/extend_rag_ablation_testset.py 200
 python backend/scripts/evaluate_rag_ablation.py
 
 # RQ1: model benchmark (one model at a time), then re-run any question that got no response

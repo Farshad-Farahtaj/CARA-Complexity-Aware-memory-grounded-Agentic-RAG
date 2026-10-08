@@ -38,8 +38,11 @@ MODELS = [
 ]
 
 # Questions of the RAG ablation whose source passage is a list of
-# bibliographic references (identified by reading the 50 passages).
-REFERENCE_LIST_IDS = {1, 2, 19, 21, 32, 37, 42, 45, 50}
+# bibliographic references (identified by reading the 200 passages).
+REFERENCE_LIST_IDS = {
+    1, 2, 19, 21, 32, 37, 42, 45, 50, 72, 73, 74, 80, 93, 95, 101,
+    102, 107, 135, 136, 149, 156, 157, 170,
+}
 
 
 # ----------------------------------------------------------------------
@@ -205,6 +208,16 @@ def experiment_2():
     second = sum((i["no_rag_verdict"] if i["rag_shown_first"] else i["rag_verdict"]) == "CONSISTENT" for i in items)
     print(f"\nAnswer with retrieval shown first in {shown_first} of {len(items)} questions")
     print(f"Consistent verdicts: first position {first}, second position {second}")
+    first_only = sum(
+        (i["rag_verdict"] if i["rag_shown_first"] else i["no_rag_verdict"]) == "CONSISTENT"
+        and (i["no_rag_verdict"] if i["rag_shown_first"] else i["rag_verdict"]) != "CONSISTENT"
+        for i in items)
+    second_only = sum(
+        (i["rag_verdict"] if i["rag_shown_first"] else i["no_rag_verdict"]) != "CONSISTENT"
+        and (i["no_rag_verdict"] if i["rag_shown_first"] else i["rag_verdict"]) == "CONSISTENT"
+        for i in items)
+    print(f"Only the first consistent: {first_only}, only the second: {second_only}, "
+          f"McNemar p{format_p(mcnemar_exact(first_only, second_only))}")
 
     with_retrieval = np.median([len(i["rag_answer"].split()) for i in items])
     without = np.median([len(i["no_rag_answer"].split()) for i in items])
